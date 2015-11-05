@@ -1,0 +1,43 @@
+{% extends "template.html" %}
+{% block style %} "display: inline-block; width: 100%" {% endblock %}
+{% block content %}
+<center>
+<h1> Song Information </h1>
+<h2> {{song.name}} </h2>
+<h2> {{song.author}} </h2>
+<hr/>
+
+{% if song.cnt == 0 %}
+<center>Nothing to show.</center>
+{% else %}
+{{song.cnt}} total impressions (rating: {{rating}}):
+<table class="table" style="margin-left: 6%; width: 80%; table-layout: fixed">
+  <tr><td><b>Name</b></td><td><b>Rating</b></td><td><b>Comment</b></td></tr>
+{% for impression in impressions %}
+  <tr><td>{{impression.author}}</td><td>{{impression.rating}}</td><td>{{impression.comment}}</td></tr>
+{% endfor %}
+</table>
+{% endif %}
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <div style="text-color: red">
+    {% for message in messages %}
+      {{ message }}
+    {% endfor %}
+  </div>
+  {% endif %}
+{% endwith %}
+
+<form action="submit/{{song.id}}" method="post">
+  {{form.csrf_token}}
+  <table class="table" style="width: 40%; table-layout: fixed">
+    <tr><td>{{form.author.label}}</td><td>{{form.author}}</td></tr>
+    <tr><td>{{form.rating.label}}</td><td>{{form.rating}}</td></tr>
+    <tr><td>{{form.comment.label}}</td><td>{{form.comment}}</td></tr>
+    <tr><td>Captcha</td><td>{{form.captcha}}</td></tr>
+  </table>
+    <input type="submit" value="Submit impression"/>
+</form>
+</center>
+{% endblock %}

@@ -1,0 +1,73 @@
+﻿		<div style="float:left; height: 100%;">
+			<h1 style="padding-left:3%;" id="about">About</h1>
+			<p style="padding-left:5%; width:75%; font-family: 'Alegreya Sans'">
+				Welcome to the first installment of Be-Music West! <br/> <br/>
+
+				Be-Music West is a BMS event based in the west (America and Europe) for people who do not speak/read Japanese or Korean. The event has no genre rules or theme, and exists to create a more active community in the west. <br/> <br/>
+
+				Though the event is aimed towards the western userbase, we highly encourage anyone to join! <br/> <br/>
+
+				For those unfamiliar with BMS and BMS events, here is a short explanation: <br/>
+				BMS is a format that allows you to simulate gameplay similar to beatmania, beatmania IIDX and pop'n music. Like these games, the BMS files come with keysounds that are played when you hit the corresponding notes in whichever BMS player you are using. The most popular BMS player for now is Lunatic Rave 2.<br/> <br/>
+
+				The common method of distributing BMS files, is to enter BMS events (like this one!). BMS events are online happenings where people submit their own BMS files for evaluation by the general public. Anyone can then download their BMS files and play them, and then go on the BMS submission page and rate it!<br/> <br/>
+
+				If you are new to the process of creating BMS files, then click here for a document explaining everything you need to know!<br/> <br/>
+
+				I hope you take part in our event!
+			</p>
+
+			<h1 style="padding-left:3%;" id="rules">Rules</h1>
+			<div style="padding-left:5%; width:75%; font-family: 'Alegreya Sans'">
+				<h2>Submission Rules (for bms authors)</h2> <br/>
+				<ul>
+					<li>BMS must be playable by LR2. (Autoplay)</li>
+					<li>BMS must be keysounded. This means at least 70% of the notes must have a playable sound.</li>
+					<li>Unreleased BMS only. The song can be released before the BMS.</li>
+					<li>Submission must contain at least one Single Play chart (7keys or 5keys)</li>
+					<li>Songs submitted without the consent of the author are not allowed. This includes arrangements and remixes.</li>
+					<li>Any submissions infringing copyright will be removed.</li>
+					<li>Any submissions deemed too offensive and/or controversial will be removed at sight.</li>
+					<li>Though this is a western-based event, anyone is encouraged to enter!</li>
+					<li>Modification of the archive during impression period is prohibited with the exception of major errors such as music not playing. If there has been a minor error, please upload a new archive with the updated/fixed files than can be extracted on top of the original.</li>
+					<li>Late admissions will be allowed for 1 week, but you will have to contact the event organization.</li>
+					<li>BMSON files are allowed - but be aware of their limitations in audience.</li>
+				</ul>
+				<h2>Impression Rules (for players)</h2>
+				<ul>
+					<li>Impression score will range from 0 through 100 points</li>
+					<li>A single IP can only vote once per submission.</li>
+					<li>Impression comments are prefered (and highly encouraged) in English.</li>
+					<li>The winner is decided by log10 ([Number Impressions]) x [Average Score] </li>
+					<li>Vandalism and Propaganda is prohibited.</li>
+					<li>You’re not allowed to post impressions on your own submission.</li>
+					<li>Impression period will be extended by 1 week if there are 30 or more submissions</li>
+				</ul>
+				<br/>
+				<b>
+					We recommend you use cloud drives such as Dropbox, OneDrive or Google Drive for uploading your BMS archives.
+					An event package will be created after the registration period has concluded.
+				</b>
+			</div>
+		</div>
+
+		<div style="padding-left: 5px; height: 100%; position: fixed; right: 0; top: 0; background-color:rgb(240,240,240)">
+			<div>
+				<h2 id="info">Information</h2>
+				<div style="margin-left: 5%">
+					<b>Registration Period</b>: Jan. 9 ~ Jan.16 <br/> <br/>
+
+					<b>Impression Period</b>: Jan. 16 ~ Jan. 30 <br/> <br/>
+
+					<b>Event Organizers</b>: ドルフィン and Agka <br/> <br/>
+				</div>
+				<ul>
+					<li><a href="https://docs.google.com/document/d/1ywUO5RxCP8jCM7MuFGFAS5TIRK2gsyM3-rMgvPuMEcw/edit?usp=sharing">BMS creation notes</a></li>
+					<li><a href="https://docs.google.com/document/d/1gQKPWApeL03aO09-II7slxTeuvm3HO_FmY1D4chRvOQ/edit">BMSON creation notes</a>
+				</ul>
+				<div>
+					<a class="twitter-timeline" href="https://twitter.com/BeMusicWest" data-widget-id="640202301156757504">Tweets by @BeMusicWest</a>
+					<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+				</div>
+			</div>
+		</div>
