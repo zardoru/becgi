@@ -64,11 +64,13 @@ def evt_songs():
 def sng_impressions(id, form=None):
     if form is None:
         form = ImpressionForm()
+    impressions = database.get_impressions(id)
     return render_template("songimpressions.html",
-        impressions=database.get_impressions(id),
+        impressions=impressions,
         song=database.get_song_by_id(id),
         rating=database.get_song_rating(id),
-        form=form)
+        form=form,
+        impression_count=len(impressions))
 
 @app.route("/impressions/id/submit/<id>", methods=["POST"])
 def submit_impression(id):
