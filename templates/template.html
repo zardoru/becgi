@@ -1,38 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-		<title>Be-Music West {% block title %}{% endblock %}</title>
-
-		<!-- Bootstrap -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-		<link href='https://fonts.googleapis.com/css?family=Poiret+One|Alegreya+Sans' rel='stylesheet' type='text/css'>
+    <head>
+        <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+                    <title>Be-Music West {% block title %}{% endblock %}</title>
+                    <!-- Bootstrap -->
+                    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+                        <link href='https://fonts.googleapis.com/css?family=Poiret+One|Alegreya+Sans' rel='stylesheet' type='text/css'>
 		{% block head %}
 		{% endblock %}
-	</head>
-	<body>
-		<nav class="navbar navbar-default">
-			<div class="container-fluid">
-				<h1><img src="http://echo.s-ul.eu/YGzzTGU8.png" alt="" /></h1>
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav">
-						<li><a href="/about/"><strong>about</strong></a></li>
-						<li><a href="/rules/"><strong>rules</strong></a></li>
-						<li><a href="/submit/"><strong>submit</strong></a></li>
-						<li><a href="/impressions/"><strong>songs list</strong></a></li>
-					</ul>
-				</div>
-			</div>
-		</nav>
-
-		<div style={% block style %}"float:left; height: 100%;" {% endblock %}>
+	
+                        </head>
+                        <body>
+                            <nav class="navbar navbar-default">
+                                <div class="container-fluid">
+                                    <h1>
+                                        <img src="http://echo.s-ul.eu/YGzzTGU8.png" alt="" />
+                                    </h1>
+                                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                        <ul class="nav navbar-nav">
+                                            <li>
+                                                <a href="/about/">
+                                                    <strong>about</strong>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/rules/">
+                                                    <strong>rules</strong>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/submit/">
+                                                    <strong>submit</strong>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/impressions/">
+                                                    <strong>songs list</strong>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </nav>
+                            <div style={% block style %}"float:left; height: 100%;" {% endblock %}>
 		{% block content_head %} {% endblock %}
-		<p style="padding-left:5%; width:75%; font-family: 'Alegreya Sans'">
+		
+                                <p style="padding-left:5%; width:75%; font-family: 'Alegreya Sans'">
 			{% block content %} {% endblock %}
 		</p>
-		</div>
-	</body>
-</html>
+                            </div>
+                        </body>
+                    </html>
