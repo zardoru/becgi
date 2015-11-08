@@ -2,10 +2,11 @@ import sqlite3
 from math import log10
 
 class Song(object):
-    def __init__(self, name, author, bga_author, link, id, cnt):
+    def __init__(self, name, author, bga_author, description, link, id, cnt):
         self.name = name
         self.author = author
         self.bga_author = bga_author
+        self.description = description
         self.link = link
         self.id = id
         self.impression_count = cnt
@@ -30,11 +31,11 @@ def generate():
         c.execute(stmt)
     conn.close()
 
-def insert_entry(name, author, bga_author, link):
+def insert_entry(name, author, bga_author, description, link):
     conn = get_conn()
     c = conn.cursor()
-    c.execute('INSERT INTO entry VALUES (NULL,?,?,?,?)',
-              (name, author, bga_author, link))
+    c.execute('INSERT INTO entry VALUES (NULL,?,?,?,?,?)',
+              (name, author, bga_author, description, link))
     conn.commit()
     conn.close()
 
@@ -45,7 +46,7 @@ def get_entries():
     for row in c.execute('SELECT * FROM entry'):
         cnt_cur = conn.cursor()
         for cnt_row in cnt_cur.execute("SELECT COUNT(*) FROM impression WHERE parent_entry=?", (row[0],)):
-            entries.append(Song(row[1], row[2], row[3], row[4], row[0], cnt_row[0]))
+            entries.append(Song(row[1], row[2], row[3], row[4], row[5], row[0], cnt_row[0]))
 
     conn.close()
     return entries
@@ -64,7 +65,7 @@ def get_song_by_id(song_id):
     for row in c.execute('SELECT * FROM entry WHERE id=?',(song_id,)):
         cnt_cur = conn.cursor()
         for cnt_row in cnt_cur.execute("SELECT COUNT(*) FROM impression WHERE parent_entry=?", (row[0],)):
-            return Song(row[1], row[2], row[3], row[4], row[0], cnt_row[0])
+            return Song(row[1], row[2], row[3], row[4], row[5], row[0], cnt_row[0])
 
 def get_song_rating(song_id):
     impressions = get_impressions(song_id)

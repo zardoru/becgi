@@ -18,7 +18,8 @@ def submissions_list():
 class SubmitForm(Form):
     bms_name = TextField("BMS name", validators=[DataRequired()])
     bms_author = TextField("BMS author(s) (comma separated)")
-    bga_author = TextField("BGA author(s) (comma separated)")
+    bga_author = TextField("BGA author(s) (comma separated, optional)")
+    description = TextAreaField("Description (1024 chars)")
     bms_link = URLField("BMS Download URL", validators=[url(), DataRequired()])
     captcha = RecaptchaField()
 
@@ -41,8 +42,9 @@ def handle_bms_submission():
         name = form.bms_name.data
         author = form.bms_author.data
         bga_author = form.bga_author.data
+        description = form.description.data
         link = form.bms_link.data
-        database.insert_entry(name, author, bga_author, link)
+        database.insert_entry(name, author, bga_author, description, link)
         return render_template("submit_success.html", name=name, author=author, link=link, success=True)
     return render_template("submit_success.html", success=False)
 

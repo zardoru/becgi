@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS entry (
   name varchar(255),
   author varchar(255),
   bga_author varchar(255),
+  description varchar(1024),
   url varchar(255)
 );
 
