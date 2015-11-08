@@ -1,10 +1,32 @@
 {% extends "template.html" %}
 {% block content %}
+
 <h1 style="padding-left: 3%"> Songs list </h1>
 <table class="table" style="margin-left: 6%; width: 80%; table-layout: fixed">
-	<tr><td><b>Song</b></td><td><b>Author(s)</b></td><td><b>Link</b></td><td><b>Impressions</b></td></tr>
+    <tr>
+        <td>
+            <b>Song</b>
+        </td>
+        <td>
+            <b>Author(s)</b>
+        </td>
+        <td>
+            <b>Link</b>
+        </td>
+        <td>
+            <b>Impressions</b>
+        </td>
+    </tr>
 {% for song in entries %}
-	<tr><td>{{song.name}}</td><td>{{song.author}}</td><td>{{song.link}}</td><td><a href="/impressions/id/{{song.id}}">{{song.impression_count}}</a></td></tr>
+	
+    <tr>
+        <td>
+            <a href="/impressions/id/{{song.id}}">{{song.name}}</a></td>
+        <td>{{song.author}}</td>
+        <td>{{song.link}}</td>
+        <td>{{song.impression_count}}</td>
+    </tr>
 {% endfor %}
+
 </table>
 {% endblock %}
