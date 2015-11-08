@@ -16,15 +16,15 @@ def submissions_list():
     return render_template("about.html")
 
 class SubmitForm(Form):
-    bms_name = TextField("BMS name", validators=[DataRequired()])
+    bms_name = TextField("Title", validators=[DataRequired()])
     bms_author = TextField("BMS author(s) ((bga, movie, music, etc...): author, comma separated)")
-    bms_link = URLField("BMS Download URL", validators=[url(), DataRequired()])
+    bms_link = URLField("Download URL", validators=[url(), DataRequired()])
     captcha = RecaptchaField()
 
 class ImpressionForm(Form):
-    author = TextField("Impression Author")
-    rating = IntegerField("Impression Rating", validators=[DataRequired()])
-    comment = TextAreaField("Comments")
+    author = TextField("Name")
+    rating = IntegerField("Score (0 - 100)", validators=[DataRequired()])
+    comment = TextAreaField("Comment")
     captcha = RecaptchaField()
 
 @app.route('/submit/')
