@@ -3,14 +3,17 @@
 {% block content %}
 <center>
 <h1> Song Information </h1>
-<h2> {{song.name}} </h2>
-<h2> {{song.author}} </h2>
+<h2> <b>{{song.name}}</b> </h2>
+<h3> by <b>{{song.author}}</b> </h3>
+{% if song.bga_author != "" %}
+<h3> BGA: {{song.bga_author}} </h3>
+{% endif %}
 <hr/>
 
-{% if song.cnt == 0 %}
+{% if impression_count == 0 %}
 <center>Nothing to show.</center>
 {% else %}
-{{song.cnt}} total impressions (rating: {{rating}}):
+{{impression_count}} total impressions (rating: {{rating}}):
 <table class="table" style="margin-left: 6%; width: 80%; table-layout: fixed">
   <tr><td><b>Name</b></td><td><b>Rating</b></td><td><b>Comment</b></td></tr>
 {% for impression in impressions %}

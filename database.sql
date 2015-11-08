@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS entry (
   id INTEGER PRIMARY KEY,
   name varchar(255),
   author varchar(255),
+  bga_author varchar(255),
   url varchar(255)
 );
 
