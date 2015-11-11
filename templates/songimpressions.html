@@ -1,35 +1,47 @@
 {% extends "template.html" %}
 {% block style %} "display: inline-block; width: 100%" {% endblock %}
 {% block content %}
-<center>
-<h1> Song Information </h1>
-<h2> <b>{{song.name}}</b> </h2>
-<h3> by <b>{{song.author}}</b> </h3>
-{% if song.bga_author != "" %}
-<h3> BGA: {{song.bga_author}} </h3>
-{% endif %}
-<hr/>
 
-<div style="margin-left: 3%">
-<h4> Description </h4>
-<p>{{song.description}}</p>
-</div>
-<hr/>
+<center>
+    <h1><span style="color:silver"> Song Information </span></h1>
+    <h2> {{song.name}} </h2>
+    <h3> {{song.author}} </h3>
+    <hr/>
+
 {% if impression_count == 0 %}
-<center>Nothing to show.</center>
+    <center>Nothing to show.</center>
 {% else %}
-{{impression_count}} total impressions (rating: {{rating}}):
-<table class="table" style="margin-left: 6%; width: 80%; table-layout: fixed">
-  <tr><td><b>Name</b></td><td><b>Rating</b></td><td><b>Comment</b></td></tr>
+    <h4><span style="color:darkgrey">Total Impressions: </span>{{impression_count}}</h4>
+    <h4><span style="color:darkgrey">Total Score: </span><b>{{rating}}</b></h4><br/>
+
+    <table class="table" style="margin-left: 6%; width: 80%; table-layout: fixed">
+        <tr>
+            <td>
+                <b>Name</b>
+            </td>
+            <td>
+                <b>Rating</b>
+            </td>
+            <td>
+                <b>Comment</b>
+            </td>
+        </tr>
 {% for impression in impressions %}
-  <tr><td>{{impression.author}}</td><td>{{impression.rating}}</td><td>{{impression.comment}}</td></tr>
+
+        <tr>
+            <td>{{impression.author}}</td>
+            <td>{{impression.rating}}</td>
+            <td>{{impression.comment}}</td>
+        </tr>
 {% endfor %}
-</table>
+
+    </table>
 {% endif %}
 
 {% with messages = get_flashed_messages() %}
   {% if messages %}
-  <div style="text-color: red">
+
+    <div style="text-color: red">
     {% for message in messages %}
       {{ message }}
     {% endfor %}
@@ -37,15 +49,30 @@
   {% endif %}
 {% endwith %}
 
-<form action="submit/{{song.id}}" method="post">
+
+    <form action="submit/{{song.id}}" method="post">
   {{form.csrf_token}}
-  <table class="table" style="width: 40%; table-layout: fixed">
-    <tr><td>{{form.author.label}}</td><td>{{form.author}}</td></tr>
-    <tr><td>{{form.rating.label}}</td><td>{{form.rating}}</td></tr>
-    <tr><td>{{form.comment.label}}</td><td>{{form.comment}}</td></tr>
-    <tr><td>Captcha</td><td>{{form.captcha}}</td></tr>
-  </table>
-    <input type="submit" value="Submit impression"/>
-</form>
+
+        <table class="table" style="width: 40%; table-layout: fixed">
+            <tr>
+                <td>{{form.author.label}}</td>
+                <td>{{form.author}}</td>
+            </tr>
+            <tr>
+                <td>{{form.rating.label}}</td>
+                <td>{{form.rating}}</td>
+            </tr>
+            <tr>
+                <td>{{form.comment.label}}</td>
+                <td>{{form.comment}}</td>
+            </tr>
+            <tr>
+                <td>Captcha</td>
+                <td>{{form.captcha}}</td>
+            </tr>
+        </table>
+        <input type="submit" value="Submit impression"/>
+    </form>
+
 </center>
 {% endblock %}

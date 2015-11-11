@@ -1,11 +1,13 @@
 {% extends "template.html" %}
 {% block head %}
-		<script src='https://www.google.com/recaptcha/api.js'></script>
+
+<script src='https://www.google.com/recaptcha/api.js'></script>
 {% endblock %}
 {% block style %} "text-align: center" {% endblock %}
 {% block content %}
-		<center>
-		<form action="/submit/handle_submit" method="post" style="margin-left: 20%; margin-right: 20%; font-family: 'Alegreya Sans'">
+
+<center>
+    <form action="/submit/handle_submit" method="post" style="margin-left: 20%; margin-right: 20%; font-family: 'Alegreya Sans'">
 			{{form.csrf_token}}
 			<table class="table">
 				<tr><td>{{form.bms_name.label}}</td><td>{{form.bms_name}}</td></tr>
