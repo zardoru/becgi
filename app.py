@@ -12,8 +12,8 @@ app.config.from_object("config")
 database.generate()
 
 # app vars (to be used etc)
-submissions_open = False
-impressions_open = False
+submissions_open = True
+impressions_open = True
 
 @app.route('/')
 def submissions_list():
@@ -65,6 +65,10 @@ def evt_admin():
 @app.route("/about/")
 def evt_about():
     return render_template("about.html")
+
+@app.route("/bmsvsbmson/")
+def evt_vs():
+    return render_template("bmson.html")
 
 @app.route("/rules/")
 def evt_rules():

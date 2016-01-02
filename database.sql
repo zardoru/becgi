@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS entry (
-  id INTEGER PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   name varchar(255),
   author varchar(255),
   bga_author varchar(255),
@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS entry (
 );
 
 CREATE TABLE IF NOT EXISTS impression (
-  id INTEGER PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   author varchar(255),
   rating INTEGER CHECK (rating >= 0 AND rating <= 100),
   comment varchar(1024),
