@@ -1,48 +1,49 @@
 {% extends "template.html" %}
 {% block content %}
 
-<div style="float:left; height: 100%;">
+<div class="row">
+  <div class="col-md-8">
     <h1 class="b-header" id="bmson">BMS vs bmson</h1>
     <p class="description-text">
-        Both BMS and bmson have their upsides and downsides. </br>
-        If you’re unfamiliar with bmson, here is an excerpt from the bmson v1.0 specification:
-            <p class="d-pad"><i>
-                “bmson is a file format based on JSON. </br>
-                Compared to BMS, it is a much easier format to handle on both artist and developer ends, </br>
-                as the format expects games to slice the sound stems during play rather than artists having to do all this work beforehand. </br>
-                This also removes the limit of keysounds you can have in a single chart, </br>
-                as well as it lets chart creators to use any part of any sound they want.” </br>
-            </i></p>
+      Both BMS and bmson have their upsides and downsides. </br>
+      If you’re unfamiliar with bmson, here is an excerpt from the bmson v1.0 specification:
+      <p class="d-pad"><i>
+        “bmson is a file format based on JSON. </br>
+        Compared to BMS, it is a much easier format to handle on both artist and developer ends, </br>
+        as the format expects games to slice the sound stems during play rather than artists having to do all this work beforehand. </br>
+        This also removes the limit of keysounds you can have in a single chart, </br>
+        as well as it lets chart creators to use any part of any sound they want.” </br>
+      </i></p>
     </p>
     <p class="description-text">
-        bmson was initially developed by <a href=https://twitter.com/wosderge>wosderge</a>, hoping it would be used by many. </br>
-        Thus to help in his agenda, we allow the submission of bmson files in this event. </br>
-        Unlike BMS, bmson has <b>no keysound limit</b>. This means you can have as many playable sounds as you wish. </br>
-        The way keysounds are chopped up are up to the chart creator as opposed to the artist. </br>
-        Instead of having to export every single keysound individually, you can instead export full length stems. No length limit. </br>
-        This makes the whole process of creating keysounds (playable sounds) much easier. </br>
-        However, bmson has a major drawback. </br>
-        Due to bmson being fairly new, it’s largest downside is it’s lack of support. </br>
-        As of writing this, only 3 games support bmson, those being: </br>
-            <ul class="description-text d-pad">
-                <li><a href=https://github.com/zardoru/raindrop/releases>raindrop</a> by Agka</li>
-                <li><a href=https://bemuse.ninja/>Bemuse</a> by flicknote</li>
-                <li><a href=http://circularrhythm.github.io/>CircularRhythm</a> by suitougreentea</li>
-            </ul>
+      bmson was initially developed by <a href=https://twitter.com/wosderge>wosderge</a>, hoping it would be used by many. </br>
+      Thus to help in his agenda, we allow the submission of bmson files in this event. </br>
+      Unlike BMS, bmson has <b>no keysound limit</b>. This means you can have as many playable sounds as you wish. </br>
+      The way keysounds are chopped up are up to the chart creator as opposed to the artist. </br>
+      Instead of having to export every single keysound individually, you can instead export full length stems. No length limit. </br>
+      This makes the whole process of creating keysounds (playable sounds) much easier. </br>
+      However, bmson has a major drawback. </br>
+      Due to bmson being fairly new, it’s largest downside is it’s lack of support. </br>
+      As of writing this, only 3 games support bmson, those being: </br>
+      <ul class="description-text d-pad">
+        <li><a href=https://github.com/zardoru/raindrop/releases>raindrop</a> by Agka</li>
+        <li><a href=https://bemuse.ninja/>Bemuse</a> by flicknote</li>
+        <li><a href=http://circularrhythm.github.io/>CircularRhythm</a> by suitougreentea</li>
+      </ul>
     </p>
     <p class="description-text">
-        It also only has two editors:
-            <ul class="description-text d-pad">
-                <li><a href=http://cerebralmuddystream.nekokan.dyndns.info/bmson/>woseq</a> by wosderge (now oudated)</li>
-                <li><a href=http://sky.geocities.jp/exclusion_bms/bmsone_en.html>BmsONE</a> by exclusion</li>
-            </ul>
+      It also only has two editors:
+      <ul class="description-text d-pad">
+        <li><a href=http://cerebralmuddystream.nekokan.dyndns.info/bmson/>woseq</a> by wosderge (now oudated)</li>
+        <li><a href=http://sky.geocities.jp/exclusion_bms/bmsone_en.html>BmsONE</a> by exclusion</li>
+      </ul>
     </p>
     <p class="description-text">
-        All of these softwares are in development, and lack many features you would find in programs such as Lunatic Rave 2 or iBMSC. </br>
-        With lack of developer support, comes lack of player support. </br>
-        Due to bmson being the less popular than BMS, you need to expect less traffic to your submission. </br>
+      All of these softwares are in development, and lack many features you would find in programs such as Lunatic Rave 2 or iBMSC. </br>
+      With lack of developer support, comes lack of player support. </br>
+      Due to bmson being the less popular than BMS, you need to expect less traffic to your submission. </br>
     </p>
-
-    {% include 'sidebar.html' %}
+  </div>
+  {% include 'sidebar.html' %}
 </div>
 {% endblock %}

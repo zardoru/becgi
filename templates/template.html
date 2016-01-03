@@ -16,9 +16,9 @@
                         </head>
                         <body>
                             <nav class="navbar navbar-default">
-                                <div class="container-fluid">
-                                    <h1>
-                                        <img src="http://echo.s-ul.eu/YGzzTGU8.png" alt="" />
+                                <div class="container container-fluid">
+                                    <h1 class="navbar-header">
+                                        <img class="img-responsive" src="http://echo.s-ul.eu/YGzzTGU8.png" alt=""/>
                                     </h1>
                                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                         <ul class="nav navbar-nav">
@@ -51,12 +51,11 @@
                                     </div>
                                 </div>
                             </nav>
-                            <div style={% block style %}"float:left; height: 100%;" {% endblock %}>
-		{% block content_head %} {% endblock %}
-
-                                <p style="font-family: 'Alegreya Sans'">
-			{% block content %} {% endblock %}
-		</p>
+                            <div class="container container-fluid">
+                                <p class="content">
+			                            {% block content %} {% endblock %}
+		                            </p>
+                            {% include 'footer.html' %}
                             </div>
                         </body>
                     </html>

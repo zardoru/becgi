@@ -11,7 +11,6 @@ from datetime import datetime
 # boilerplate
 app = Flask(__name__)
 app.config.from_object("config")
-database.generate()
 
 # instance date management
 tp = lambda x: datetime.strptime(x, "%d/%m/%Y")
@@ -26,10 +25,22 @@ def are_submissions_open():
         return ssd <= datetime.utcnow() <= esd
     else:
         return True
-        
+
 def are_impressions_open():
     if not app.debug:
         return sid <= datetime.utcnow() <= sid
+    else:
+        return True
+
+def can_see_submissions():
+    if not app.debug:
+        return ssd <= datetime.utcnow()
+    else:
+        return True
+
+def are_impressions_finished():
+    if not app.debug:
+        return datetime.utcnow() >= eid
     else:
         return True
 
@@ -40,7 +51,14 @@ def submissions_list():
 
 class SubmitForm(Form):
     bms_name = TextField("Title", validators=[DataRequired()])
-    bms_author = TextField("BMS author(s) (comma separated)")
+    bms_author = TextField("BMS author(s) (comma separated)", description="""
+    Music composer, chart artist,
+    etc... Add details on the description field.""", validators=[DataRequired()])
+    fake_author = TextField("Impression period fake name",
+                            description="""Name to display (for the song)
+                            when impression period is going on.
+                            Will be displayed until it ends, then the real authors will
+                            be revealed.""")
     bga_author = TextField("BGA author(s) (comma separated, optional)")
     description = TextAreaField("Description (1024 chars)")
     bms_link = URLField("Download URL", validators=[url(), DataRequired()])
@@ -69,11 +87,14 @@ def handle_bms_submission():
         if form.validate_on_submit():
             name = form.bms_name.data
             author = form.bms_author.data
+            fake_author = form.fake_author.data
             bga_author = form.bga_author.data
             description = form.description.data
             link = form.bms_link.data
             email = form.bms_email.data
-            database.insert_entry(name, author, bga_author, description, link, email)
+            database.insert_entry(name,
+                                  author, fake_author, bga_author,
+                                  description, link, email)
             return render_template("submit_success.html", name=name, author=author, link=link, success=True)
         return render_template("submit_success.html", success=False)
     else:
@@ -97,7 +118,7 @@ def evt_rules():
 
 @app.route("/impressions/")
 def evt_songs():
-    if are_impressions_open():
+    if can_see_submissions():
         return render_template("impressions.html", entries=database.get_entries())
     else:
         return render_template("section_closed.html")
@@ -107,14 +128,16 @@ def sng_impressions(id, form=None):
     if form is None:
         form = ImpressionForm()
 
-    if are_impressions_open():
+    if can_see_submissions():
         impressions = database.get_impressions(id)
-        return render_template("songimpressions.html",
+        sng = database.get_song_by_id(id)
+        return render_template("song_impressions.html",
             impressions=impressions,
-            song=database.get_song_by_id(id),
+            song=sng,
             rating=database.get_song_rating(id),
             form=form,
-            impression_count=len(impressions))
+            impression_count=len(impressions),
+            is_impression_period=are_impressions_open())
     else:
         return render_template("section_closed.html")
 
@@ -142,4 +165,5 @@ def submit_impression(id):
 
 
 if __name__ == '__main__':
+    database.generate()
     app.run()

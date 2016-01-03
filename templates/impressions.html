@@ -2,32 +2,37 @@
 {% block style %} {% endblock %}
 {% block content %}
 
-<h2 style="margin-left: 3%"> Songs list </h2>
-<table class="table" style="margin: 0 auto; width: 80%">
+<h2 class="b-header"> Songs list </h2>
+
+<p class="description-text">
+  You'll find all submissions so far in here. </br>
+  Click the song's name to find more information about it.
+</p>
+
+<table class="table" class="song-table">
     <tr>
-        <td>
+        <th>
             <b>Song</b>
-        </td>
-        <td>
+        </th>
+        <th>
             <b>Author(s)</b>
-        </td>
-        <td>
+        </th>
+        <th>
             <b>Link</b>
-        </td>
-        <td>
-            <b>Impressions</b>
-        </td>
+        </th>
+        <th>
+            <b>Total Impressions</b>
+        </th>
     </tr>
 {% for song in entries %}
     <tr>
         <td>
             <a href="/impressions/id/{{song.id}}">{{song.name}}</a></td>
-        <td>{{song.author}}</td>
-        <td>{{song.link}}</td>
+        <td>{{song.display_name}}</td>
+        <td><a href="{{song.link}}">Download</a></td>
         <td>{{song.impression_count}}</td>
     </tr>
 {% endfor %}
 
 </table>
-</center>
 {% endblock %}

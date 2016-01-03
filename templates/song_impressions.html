@@ -1,0 +1,91 @@
+{% extends "template.html" %}
+{% block style %} "display: inline-block; width: 100%" {% endblock %}
+{% block content %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+
+<div class="text-center text-danger bg-danger">
+  {% for message in messages %}
+  {{ message }}
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+<div class="text-center">
+  <h1 class=".subt">Song Information </span></h1>
+  <h2> {{song.name}} </h2>
+  <h3> <span class="subt">by</span> {{song.display_name}} </h3>
+</div>
+  <hr/>
+<h3 class="text-center"> Description </h3>
+<div class="well well-sm">
+  {% for line in song.description.splitlines() %}
+  {{line}}<br/>
+  {% endfor %}
+</div>
+<center>
+<a class="btn btn-default" href="{{song.link}}"><h4> Download </h4></a>
+</center>
+<br/> <br/>
+<hr/>
+
+<div class="text-center">
+  <h3>Impressions</h3>
+  {% if impression_count == 0 %}
+  <center>Nothing to show.</center>
+  {% else %}
+  <h4>
+    <span style="color:darkgrey">Total Impressions: </span>
+    <b>{{impression_count}}</b>
+  </h4>
+  <h4>
+    <span style="color:darkgrey">Total Score: </span>
+    <b>{{rating}}</b>
+  </h4>
+  <br/>
+</div>
+
+{% for impression in impressions %}
+<div class="well well-sm">
+  <b>Name</b> {{impression.author}} <br/>
+  <b>Rating</b> {{impression.rating}} <br/>
+  {% if impression.comment != "": %}
+  <b>Comment</b> <br/>
+  <span class="text-left">{{impression.comment}}</span>
+  {% endif %}
+</div>
+{% endfor %}
+{% endif %}
+
+{% if is_impression_period: %}
+<center>
+  <h3> Leave your own! </h3>
+  <form action="submit/{{song.id}}" method="post">
+    {{form.csrf_token}}
+
+    <table class="table submit-table" style="">
+      <tr>
+        <td>{{form.author.label}}</td>
+        <td>{{form.author}}</td>
+      </tr>
+      <tr>
+        <td>{{form.rating.label}}</td>
+        <td>{{form.rating}}</td>
+      </tr>
+      <tr>
+        <td>{{form.comment.label}}</td>
+        <td>{{form.comment}}</td>
+      </tr>
+      <tr>
+        <td>Captcha</td>
+        <td>{{form.captcha}}</td>
+      </tr>
+    </table>
+    <input type="submit" value="Submit impression"/>
+  </form>
+</center>
+{% endif %}
+
+{% endblock %}

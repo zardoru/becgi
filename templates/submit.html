@@ -3,14 +3,11 @@
 
 <script src='https://www.google.com/recaptcha/api.js'></script>
 {% endblock %}
-{% block style %}{% endblock %}
 {% block content %}
-
-
 <h2 class="b-header"> Submit entry to be-music west!</h2>
 <br/>
 <center>
-<p class="description-test">
+<p class="description-text">
   Fill in all the details below. </br>
   Try to leave a valid email.</br>
   Any modifications to your entry </br>
@@ -19,9 +16,16 @@
 </p>
     <form action="/submit/handle_submit" method="post"/>
 			{{form.csrf_token}}
-			<table class="table submit-table">
+			<table class="table submit-table content">
 				<tr><td>{{form.bms_name.label}}</td><td>{{form.bms_name}}</td></tr>
-				<tr><td>{{form.bms_author.label}}</td><td>{{form.bms_author}}</td></tr>
+				<tr>
+          <td>{{form.bms_author.label}}<br/>{{form.bms_author.description}}</td>
+          <td>{{form.bms_author}}</td>
+        </tr>
+        <tr>
+          <td>{{form.fake_author.label}}<br/>{{form.fake_author.description}}</td>
+          <td>{{form.fake_author}}</td>
+        </tr>
 				<tr><td>{{form.bga_author.label}}</td><td>{{form.bga_author}}</td></tr>
 				<tr><td>{{form.description.label}}</td><td>{{form.description}}</td></tr>
 				<tr><td>{{form.bms_link.label}}</td><td>{{form.bms_link}}</td></tr>

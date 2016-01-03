@@ -1,15 +1,18 @@
 .b-header {
-  padding-left:3%;
-}
-
-.description-text {
-  width:75%;
-  padding-left:6%;
   font-family: 'Alegreya Sans';
 }
 
+.content {
+  font-family: 'Alegreya Sans';
+}
+.description-text {
+  padding-left: 6%;
+  font-family: 'Alegreya Sans';
+  overflow: hidden;
+}
+
 .d-pad {
-  padding-left: 12%;
+  margin-left: 12%;
 }
 
 .subt {
@@ -27,6 +30,18 @@
 }
 
 .impression-table {
-  width: 70%;
+  width: 95%;
   table-layout: fixed;
+}
+
+.song-table {
+  table-layout: fixed;
+}
+
+.sidebar {
+}
+
+.footer {
+  position: static;
+  bottom: 0;
 }

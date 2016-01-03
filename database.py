@@ -2,7 +2,7 @@ from math import log10
 import os
 import psycopg2
 from urllib.parse import urlparse
-
+from app import are_impressions_finished
 
 # heroku database_url!
 url = urlparse(os.environ["DATABASE_URL"])
@@ -16,15 +16,21 @@ conn = psycopg2.connect(
 )
 
 class Song(object):
-    def __init__(self, name, author, bga_author, description, link, email, id, cnt):
+    def __init__(self, name, author, fake_author, bga_author, description, link, email, id, cnt):
         self.name = name
         self.author = author
+        self.fake_author = fake_author
         self.bga_author = bga_author
         self.description = description
         self.link = link
         self.email = email
         self.id = id
         self.impression_count = cnt
+
+        if are_impressions_finished():
+            self.display_name = author
+        else:
+            self.display_name = fake_author
 
 class Impression(object):
     def __init__(self, author, rating, comment):
@@ -38,12 +44,12 @@ def generate():
     c.execute(f.read())
     conn.commit()
 
-def insert_entry(name, author, bga_author, description, link, email):
+def insert_entry(name, author, fake_author, bga_author, description, link, email):
     c = conn.cursor()
     c.execute("""INSERT INTO entry
-    (name,author,bga_author,description,url,email)
-    VALUES (%s,%s,%s,%s,%s,%s)""",
-              (name, author, bga_author, description, link,email))
+    (name,author,fake_author,bga_author,description,url,email)
+    VALUES (%s,%s,%s,%s,%s,%s,%s)""",
+              (name, author, fake_author, bga_author, description, link, email))
     conn.commit()
 
 def get_entries():
@@ -53,6 +59,7 @@ def get_entries():
 SELECT
     entry.name,
     entry.author,
+    entry.fake_author,
     entry.bga_author,
     entry.description,
     entry.url,
@@ -82,6 +89,7 @@ def get_song_by_id(song_id):
     SELECT
         entry.name,
         entry.author,
+        entry.fake_author,
         entry.bga_author,
         entry.description,
         entry.url,
