@@ -6,43 +6,13 @@ from wtforms.validators import url, DataRequired, Email
 from flask.ext.wtf import Form
 from flask.ext.wtf import RecaptchaField
 import database
-from datetime import datetime
+from date import *
 
 # boilerplate
 app = Flask(__name__)
 app.config.from_object("config")
 
-# instance date management
-tp = lambda x: datetime.strptime(x, "%d/%m/%Y")
-ssd = tp(app.config["START_SUBMIT_DATE"])
-esd = tp(app.config["END_SUBMIT_DATE"])
-sid = tp(app.config["START_IMPRESSION_DATE"])
-eid = tp(app.config["END_IMPRESSION_DATE"])
 
-# app vars (to be used etc)
-def are_submissions_open():
-    if not app.debug:
-        return ssd <= datetime.utcnow() <= esd
-    else:
-        return True
-
-def are_impressions_open():
-    if not app.debug:
-        return sid <= datetime.utcnow() <= sid
-    else:
-        return True
-
-def can_see_submissions():
-    if not app.debug:
-        return ssd <= datetime.utcnow()
-    else:
-        return True
-
-def are_impressions_finished():
-    if not app.debug:
-        return datetime.utcnow() >= eid
-    else:
-        return True
 
 # app
 @app.route('/')

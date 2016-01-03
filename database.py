@@ -2,7 +2,7 @@ from math import log10
 import os
 import psycopg2
 from urllib.parse import urlparse
-from app import are_impressions_finished
+from date import are_impressions_finished
 
 # heroku database_url!
 url = urlparse(os.environ["DATABASE_URL"])
