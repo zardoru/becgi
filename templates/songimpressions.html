@@ -22,7 +22,11 @@
     <div class="container">
       <div class="container-fluid">
         <h3> Description </h4>
-        <p>{{song.description}}</p>
+        <p>
+          {% for line in song.description.splitlines() %}
+            {{line}}<br/>
+          {% endfor %}
+        </p>
         <a href="{{song.link}}"><h4> Download </h4></a>
       </div>
     </div>
