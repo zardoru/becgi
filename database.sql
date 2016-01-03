@@ -4,7 +4,8 @@ CREATE TABLE IF NOT EXISTS entry (
   author varchar(255),
   bga_author varchar(255),
   description varchar(1024),
-  url varchar(255)
+  url varchar(255),
+  email varchar(255)
 );
 
 CREATE TABLE IF NOT EXISTS impression (

@@ -3,22 +3,33 @@
 
 <script src='https://www.google.com/recaptcha/api.js'></script>
 {% endblock %}
-{% block style %} "text-align: center" {% endblock %}
+{% block style %}{% endblock %}
 {% block content %}
 
+
+<h2 class="b-header"> Submit entry to be-music west!</h2>
+<br/>
 <center>
-    <form action="/submit/handle_submit" method="post" style="margin-left: 20%; margin-right: 20%; font-family: 'Alegreya Sans'">
+<p class="description-test">
+  Fill in all the details below. </br>
+  Try to leave a valid email.</br>
+  Any modifications to your entry </br>
+  must be sent to the event e-mail at <strong>bmwest@gmail.com</strong>  </br>
+  from the email you've put in here, or else they will be ignored! </br>
+</p>
+    <form action="/submit/handle_submit" method="post"/>
 			{{form.csrf_token}}
-			<table class="table">
+			<table class="table submit-table">
 				<tr><td>{{form.bms_name.label}}</td><td>{{form.bms_name}}</td></tr>
 				<tr><td>{{form.bms_author.label}}</td><td>{{form.bms_author}}</td></tr>
 				<tr><td>{{form.bga_author.label}}</td><td>{{form.bga_author}}</td></tr>
 				<tr><td>{{form.description.label}}</td><td>{{form.description}}</td></tr>
 				<tr><td>{{form.bms_link.label}}</td><td>{{form.bms_link}}</td></tr>
+				<tr><td>{{form.bms_email.label}}</td><td>{{form.bms_email}}</td></tr>
 				<tr><td>Captcha</td><td>{{form.captcha}}</td></tr>
 			</table>
 			<hr/>
 			<input type="submit" value="Submit entry!">
 		</form>
-		</center>
+</center>
 {% endblock %}

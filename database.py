@@ -3,6 +3,8 @@ import os
 import psycopg2
 from urllib.parse import urlparse
 
+
+# heroku database_url!
 url = urlparse(os.environ["DATABASE_URL"])
 
 conn = psycopg2.connect(
@@ -14,12 +16,13 @@ conn = psycopg2.connect(
 )
 
 class Song(object):
-    def __init__(self, name, author, bga_author, description, link, id, cnt):
+    def __init__(self, name, author, bga_author, description, link, email, id, cnt):
         self.name = name
         self.author = author
         self.bga_author = bga_author
         self.description = description
         self.link = link
+        self.email = email
         self.id = id
         self.impression_count = cnt
 
@@ -35,23 +38,33 @@ def generate():
     c.execute(f.read())
     conn.commit()
 
-def insert_entry(name, author, bga_author, description, link):
+def insert_entry(name, author, bga_author, description, link, email):
     c = conn.cursor()
     c.execute("""INSERT INTO entry
-    (name,author,bga_author,description,url)
-    VALUES (%s,%s,%s,%s,%s)""",
-              (name, author, bga_author, description, link))
+    (name,author,bga_author,description,url,email)
+    VALUES (%s,%s,%s,%s,%s,%s)""",
+              (name, author, bga_author, description, link,email))
     conn.commit()
 
 def get_entries():
     entries = []
     c = conn.cursor()
-    c.execute('SELECT * FROM entry')
-    for row in c.fetchmany():
-        cnt_cur = conn.cursor()
-        cnt_cur.execute("SELECT COUNT(*) FROM impression WHERE parent_entry=%s", (row[0],))
-        for cnt_row in cnt_cur.fetchmany():
-            entries.append(Song(row[1], row[2], row[3], row[4], row[5], row[0], cnt_row[0]))
+    c.execute("""
+SELECT
+    entry.name,
+    entry.author,
+    entry.bga_author,
+    entry.description,
+    entry.url,
+    entry.email,
+    entry.id,
+    COUNT(impression.id)
+ FROM entry
+ LEFT JOIN impression ON entry.id=impression.id
+ GROUP BY entry.id;
+    """)
+    for row in c.fetchall():
+        entries.append(Song(*row))
 
     return entries
 
@@ -59,19 +72,28 @@ def get_impressions(song_id):
     impressions = []
     c = conn.cursor()
     c.execute('SELECT * FROM impression WHERE parent_entry=%s', (song_id,))
-    for row in c.fetchmany():
+    for row in c.fetchall():
         impressions.append(Impression(row[1], row[2], row[3]))
     return impressions
 
 def get_song_by_id(song_id):
     c = conn.cursor()
-    c.execute('SELECT * FROM entry WHERE id=%s',(song_id,))
-    for row in c.fetchmany():
-        cnt_cur = conn.cursor()
-        cnt_cur.execute("""SELECT COUNT(*) FROM impression
-        WHERE parent_entry=%s""" , (row[0],))
-        for cnt_row in cnt_cur.fetchmany():
-            return Song(row[1], row[2], row[3], row[4], row[5], row[0], cnt_row[0])
+    c.execute("""
+    SELECT
+        entry.name,
+        entry.author,
+        entry.bga_author,
+        entry.description,
+        entry.url,
+        entry.email,
+        entry.id,
+        COUNT(impression.id)
+     FROM entry
+     LEFT JOIN impression ON entry.id=impression.id
+     WHERE entry.id = %s
+     GROUP BY entry.id; """,(song_id,))
+    for row in c.fetchall():
+        return Song(*row)
 
 def get_song_rating(song_id):
     impressions = get_impressions(song_id)

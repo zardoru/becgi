@@ -1,0 +1,32 @@
+.b-header {
+  padding-left:3%;
+}
+
+.description-text {
+  width:75%;
+  padding-left:6%;
+  font-family: 'Alegreya Sans';
+}
+
+.d-pad {
+  padding-left: 12%;
+}
+
+.subt {
+  color:silver;
+}
+
+.mar {
+  margin-left: 3%;
+  margin-right: 3%;
+}
+
+.submit-table {
+  width: 70%;
+  table-layout: fixed;
+}
+
+.impression-table {
+  width: 70%;
+  table-layout: fixed;
+}

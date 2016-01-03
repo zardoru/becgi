@@ -3,18 +3,40 @@
 {% block content %}
 
 <center>
-    <h1><span style="color:silver"> Song Information </span></h1>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+
+    <div class="text-danger bg-danger">
+    {% for message in messages %}
+      {{ message }}
+    {% endfor %}
+  </div>
+  {% endif %}
+{% endwith %}
+
+    <h1 class=".subt">Song Information </span></h1>
     <h2> {{song.name}} </h2>
-    <h3> {{song.author}} </h3>
+    <h3> <span class="subt">by</span> {{song.author}} </h3>
+    <hr/>
+    <div class="container">
+      <div class="container-fluid">
+        <h3> Description </h4>
+        <p>{{song.description}}</p>
+        <a href="{{song.link}}"><h4> Download </h4></a>
+      </div>
+    </div>
+  <br/> <br/>
     <hr/>
 
+  <h3>Impressions</h4>
 {% if impression_count == 0 %}
     <center>Nothing to show.</center>
 {% else %}
     <h4><span style="color:darkgrey">Total Impressions: </span>{{impression_count}}</h4>
     <h4><span style="color:darkgrey">Total Score: </span><b>{{rating}}</b></h4><br/>
 
-    <table class="table" style="margin-left: 6%; width: 80%; table-layout: fixed">
+    <table class="table impression-table">
         <tr>
             <td>
                 <b>Name</b>
@@ -38,22 +60,11 @@
     </table>
 {% endif %}
 
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-
-    <div style="text-color: red">
-    {% for message in messages %}
-      {{ message }}
-    {% endfor %}
-  </div>
-  {% endif %}
-{% endwith %}
-
-
+  <h3> Leave your own! </h3>
     <form action="submit/{{song.id}}" method="post">
   {{form.csrf_token}}
 
-        <table class="table" style="width: 40%; table-layout: fixed">
+        <table class="table submit-table" style="">
             <tr>
                 <td>{{form.author.label}}</td>
                 <td>{{form.author}}</td>
