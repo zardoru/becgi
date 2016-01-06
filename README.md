@@ -4,13 +4,23 @@ This code is being used for the BMS event [Be-Music West](http://bmwest.herokuap
 It is extensible if you wish to add new fields, as you only need to add new rows in the database and make changes to the htmls.  
 
 becgi supports the basic things needed such as:  
-* Generic fields
+* Generic submissions fields
   * Artist
   * Title
   * BGA Author
   * Email
   * Download URL
   * Email
+  * Comment/Description
 * Fake Artist Name (Used for pseudonyms, displayed until after impression period.)
 * Automatic opening and closing of venue (Submissions and Impressions individually)
 * reCAPTCHA for submissions and impressions
+* Impressions
+  * Name
+  * Comment
+  * Score
+
+There are still a good amount of features currently lacking that are planned to be implemented for the next event:
+* Embeds for SoundCloud, YouTube, Nico Video
+* Stagefile
+* Form for expressing intent to join
