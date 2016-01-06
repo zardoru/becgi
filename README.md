@@ -26,5 +26,5 @@ There are still a good amount of features currently lacking that are planned to 
 * Form for expressing intent to join
 
 Right now the Impression Score is using the log10 calculation that Be-Music West uses.  
-This can easily be changed by adjusting the code to your liking.
+This can easily be changed by adjusting the code to your liking.  
 **To be able to run this code you need to create a config.py containing reCAPTCHA authentication keys.**
