@@ -30,7 +30,10 @@ class Song(object):
         if are_impressions_finished():
             self.display_name = author
         else:
-            self.display_name = fake_author
+            if len(fake_author) > 0:
+                self.display_name = fake_author
+            else:
+                self.display_name = author
 
 class Impression(object):
     def __init__(self, author, rating, comment):
