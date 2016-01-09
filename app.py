@@ -24,11 +24,12 @@ class SubmitForm(Form):
     bms_author = TextField("BMS author(s) (comma separated)", description="""
     Music composer, chart artist,
     etc... Add details on the description field.""", validators=[DataRequired()])
-    fake_author = TextField("Impression period fake name",
-                            description="""Name to display (for the song)
-                            when impression period is going on.
-                            Will be displayed until it ends, then the real authors will
-                            be revealed.""")
+    fake_author = TextField("Fake Name",
+                            description="""This will be displayed as the artist 
+                            during impression period.
+                            Once impression period is over the real artist name
+                            will be revealed.
+                            Useful for pseudonyms.""")
     bga_author = TextField("BGA author(s) (comma separated, optional)")
     description = TextAreaField("Description (1024 chars)")
     bms_link = URLField("Download URL", validators=[url(), DataRequired()])
