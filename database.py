@@ -70,7 +70,7 @@ SELECT
     entry.id,
     COUNT(impression.id)
  FROM entry
- LEFT JOIN impression ON entry.id=impression.id
+ LEFT JOIN impression ON entry.id=impression.parent_entry
  GROUP BY entry.id;
     """)
     for row in c.fetchall():
@@ -100,7 +100,7 @@ def get_song_by_id(song_id):
         entry.id,
         COUNT(impression.id)
      FROM entry
-     LEFT JOIN impression ON entry.id=impression.id
+     LEFT JOIN impression ON entry.id=impression.parent_entry
      WHERE entry.id = %s
      GROUP BY entry.id; """,(song_id,))
     for row in c.fetchall():
