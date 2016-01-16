@@ -16,7 +16,7 @@ def are_submissions_open():
 
 def are_impressions_open():
     if not DEBUG:
-        return sid <= datetime.utcnow() <= sid
+        return sid <= datetime.utcnow() <= eid
     else:
         return True
 
