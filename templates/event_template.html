@@ -3,7 +3,7 @@
     {{ event.name }} @ becgi
 {% endblock %}
 {% block logo %}
-<a href="/event/{{event.id}}">
+<a href="{{url_for('event_index', event_id=event.id)}}">
     {% if event.banner_url and event.banner_url != "" %}
     <img class="img-responsive" src="{{event.banner_url}}" alt=""/>
     {% else %}
@@ -19,14 +19,14 @@
 {% block extmenu %}
 {% if event.are_submissions_open %}
 <li>
-    <a href="/event/{{event.id}}/submit">
+    <a href="{{url_for('event_submit', event_id=event.id)}}">
         submit
     </a>
 </li>
 {% endif %}
 {% if event.can_see_submissions %}
 <li>
-    <a href="/event/{{event.id}}/impressions/">
+    <a href="{{url_for('event_songs', event_id=event.id)}}">
         songs list
     </a>
 </li>

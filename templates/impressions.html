@@ -28,7 +28,7 @@
 {% for song in entries %}
     <tr>
         <td>
-            <a href="id/{{song.id}}">{{song.name}}</a></td>
+            <a href="{{url_for('event_song_impressions', event_id=event.id, song_id=song.id)}}">{{song.name}}</a></td>
         <td>{{song.display_name}}</td>
         <td><a href="{{song.link}}">Download</a></td>
         <td>{{song.impression_count}}</td>

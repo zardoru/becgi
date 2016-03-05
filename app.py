@@ -17,7 +17,7 @@ def index():
 
 
 @app.route('/events/')
-def events_index():
+def events_list_index():
     return render_template("events.html", events=database.get_events())
 
 
@@ -31,7 +31,7 @@ def event_index(event_id):
 
 
 @app.route('/event/<int:event_id>/submit')
-def submit_bms(event_id, form=None):
+def event_submit(event_id, form=None):
     if form is None:
         form = SubmitForm()
 
@@ -43,7 +43,7 @@ def submit_bms(event_id, form=None):
 
 
 @app.route('/event/<int:event_id>/submit/handle_submit', methods=['POST'])
-def handle_bms_submission(event_id):
+def event_handle_submission(event_id):
     try:
         evt = database.Event(event_id)
         if evt.are_submissions_open:
@@ -82,27 +82,22 @@ def handle_bms_submission(event_id):
 
 
 @app.route('/event/<int:event_id>/admin')
-def evt_admin(event_id):
+def event_admin(event_id):
     return render_template("admin_event.html", event=database.Event(event_id))
 
 
 @app.route("/about/")
-def evt_about():
+def about():
     return render_template("index.html")
 
 
 @app.route("/bmsvsbmson/")
-def evt_vs():
+def event_vs():
     return render_template("bmson.html")
 
 
-@app.route("/event/<int:event_id>/rules/")
-def evt_rules(event_id):
-    return render_template("rules.html", event=database.Event(event_id))
-
-
 @app.route("/event/<int:event_id>/impressions/")
-def evt_songs(event_id):
+def event_songs(event_id):
     evt = database.Event(event_id)
     if evt.can_see_submissions:
         return render_template("impressions.html", entries=evt.entries, event=evt)
@@ -111,7 +106,7 @@ def evt_songs(event_id):
 
 
 @app.route("/event/<int:event_id>/impressions/id/<int:song_id>")
-def sng_impressions(event_id, song_id, form=None):
+def event_song_impressions(event_id, song_id, form=None):
     if form is None:
         form = ImpressionForm()
 
@@ -138,7 +133,7 @@ def sng_impressions(event_id, song_id, form=None):
 
 
 @app.route("/event/<int:event_id>/impressions/id/submit/<int:song_id>", methods=["POST"])
-def submit_impression(event_id, song_id):
+def event_submit_impression(event_id, song_id):
     evt = database.Event(event_id)
     if evt.are_impressions_open:
         form = ImpressionForm()

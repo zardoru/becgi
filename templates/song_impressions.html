@@ -69,7 +69,7 @@
 {% if is_impression_period: %}
 <center>
     <h3> Leave your own! </h3>
-    <form action="submit/{{song.id}}" method="post">
+    <form action="{{url_for('event_submit_impression', event_id=event.id, song_id=song.id)}}" method="post">
         {{form.csrf_token}}
 
         <table class="table submit-table" style="">

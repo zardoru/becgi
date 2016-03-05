@@ -32,12 +32,12 @@
             <ul class="nav navbar-nav">
                 {% block menu %}
                 <li>
-                    <a href="/about/">
+                    <a href="{{url_for('about')}}">
                         <strong>about becgi</strong>
                     </a>
                 </li>
                 <li>
-                    <a href="/events/">
+                    <a href="{{url_for('events_list_index')">
                         <strong>event list</strong>
                     </a>
                 </li>

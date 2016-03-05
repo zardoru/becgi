@@ -34,7 +34,7 @@
 {% for event in events %}
 <div class="row">
     <div class="col-md-1">
-        <a href="/event/{{event.id}}">
+        <a href="{{url_for('event_index'), event_id=event.id)}}">
             {{ event.name }}
         </a>
     </div>
@@ -56,14 +56,14 @@
     {% endif %}
     {% if event.can_see_submissions %}
     <div class="col-md-1">
-        <a class="btn btn-primary" href="/event/{{event.id}}/impressions">
+        <a class="btn btn-primary" href="{{url_for('event_songs', event_id=event.id}}">
             song list
         </a>
     </div>
     {% endif %}
     {% if event.are_submissions_open %}
     <div class="col-md-1">
-        <a class="btn btn-primary" href="/event/{{event.id}}/submit">
+        <a class="btn btn-primary" href="{{url_for('event_submit', event_id=event.id)}}">
             submit
         </a>
     </div>

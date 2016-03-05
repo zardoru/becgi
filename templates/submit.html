@@ -1,6 +1,5 @@
 {% extends "event_template.html" %}
 {% block head %}
-
 <script src='https://www.google.com/recaptcha/api.js'></script>
 {% endblock %}
 {% block content %}
@@ -14,7 +13,7 @@
         must be sent to the event e-mail at <strong>{{event.email}}</strong>  </br>
         from the email you've put in here, or else they will be ignored! </br>
     </p>
-    <form action="submit/handle_submit" method="post">
+    <form action="{{url_for('event_handle_submission', event_id=event.id)}}" method="post">
         {{form.csrf_token}}
         <table class="table submit-table content">
             <tr>
