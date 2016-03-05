@@ -18,42 +18,40 @@
 </head>
 <body>
 <nav class="navbar navbar-default">
-    <div class="container container-fluid">
-        <h1 class="navbar-header">
-            <div class="logo">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <div class="navbar-brand logo">
                 {% block logo %}
-                <h1 class="b-header">
+                <div class="b-header">
                     becgi event system
-                </h1>
+                </div>
                 {% endblock %}
             </div>
-        </h1>
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                {% block menu %}
-                <li>
-                    <a href="{{url_for('about')}}">
-                        <strong>about becgi</strong>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{url_for('events_list_index')}}">
-                        <strong>event list</strong>
-                    </a>
-                </li>
-                {% endblock %}
-                {% block extmenu %}
-
-                {% endblock %}
-            </ul>
         </div>
+        <ul class="nav navbar-nav">
+            {% block menu %}
+            <li>
+                <a href="{{url_for('about')}}">
+                    <strong>about becgi</strong>
+                </a>
+            </li>
+            <li>
+                <a href="{{url_for('events_list_index')}}">
+                    <strong>event list</strong>
+                </a>
+            </li>
+            {% endblock %}
+            {% block extmenu %}
+
+            {% endblock %}
+        </ul>
     </div>
 </nav>
-<div class="container container-fluid">
+<div class="container container-fluid content">
     <p class="content">
         {% block content %} {% endblock %}
     </p>
-    {% include 'footer.html' %}
 </div>
+{% include 'footer.html' %}
 </body>
 </html>

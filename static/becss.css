@@ -38,21 +38,27 @@
   table-layout: fixed;
 }
 
-.navbar-header {
-  width: 100%;
-}
-
 .logo {
-  width: 100%;
-  height: 100%;
 }
 
 .sidebar {
 }
 
+body {
+    background-color: rgb(245,245,245);
+}
+
+.content {
+    background-color: white;
+    border-radius: 12px;
+}
+
+.footer-wrapper {
+}
+
 .footer {
-  position: static;
   bottom: 0;
+  width: 100%;
 }
 
 img {

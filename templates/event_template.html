@@ -7,7 +7,7 @@
     {% if event.banner_url and event.banner_url != "" %}
     <img class="img-responsive" src="{{event.banner_url}}" alt=""/>
     {% else %}
-    <h1>{{event.name}}</h1>
+    <div class="b-header">{{event.name}}</div>
     {% endif %}
 </a>
 {% endblock %}
