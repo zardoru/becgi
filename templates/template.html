@@ -47,10 +47,13 @@
         </ul>
     </div>
 </nav>
-<div class="container container-fluid content">
-    <p class="content">
+
+<div class="container container-fluid">
+    {% block precontent %} {% endblock %}
+    {% block banner %} {% endblock %}
+    <div class="content">
         {% block content %} {% endblock %}
-    </p>
+    </div>
 </div>
 {% include 'footer.html' %}
 </body>

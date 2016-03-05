@@ -1,14 +1,14 @@
 {% extends 'template.html' %}
+
+
 {% block title %}
-    {{ event.name }} @ becgi
+{{ event.name }} @ becgi
 {% endblock %}
+
+
 {% block logo %}
 <a href="{{url_for('event_index', event_id=event.id)}}">
-    {% if event.banner_url and event.banner_url != "" %}
-    <img class="img-responsive" src="{{event.banner_url}}" alt=""/>
-    {% else %}
-    <div class="b-header">{{event.name}}</div>
-    {% endif %}
+    <div class="b-header evt-header">{{event.name}}</div>
 </a>
 {% endblock %}
 {% block stylesheets %}
@@ -16,6 +16,17 @@
 <link href="{{event.css_url}}" rel="stylesheet" type="text/css">
 {% endif %}
 {% endblock %}
+
+
+{% block banner %}
+{% if event.banner_url and event.banner_url != "" %}
+<div class="container container-fluid">
+    <img src="{{event.banner_url}}" class="img-responsive center-block banner" alt=""/>
+</div>
+{% endif %}
+{% endblock %}
+
+
 {% block extmenu %}
 {% if event.are_submissions_open %}
 <li>
@@ -31,4 +42,10 @@
     </a>
 </li>
 {% endif %}
+{% endblock %}
+
+{% block precontent %}
+<div class="container container-fluid text-center">
+    <h1>{{event.name}}</h1>
+</div>
 {% endblock %}

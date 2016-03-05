@@ -45,12 +45,15 @@
 }
 
 body {
-    background-color: rgb(245,245,245);
+    background-color: rgb(252,252,252);
+}
+
+.banner {
 }
 
 .content {
-    background-color: white;
     border-radius: 12px;
+    padding: 0.5%;
 }
 
 .footer-wrapper {
