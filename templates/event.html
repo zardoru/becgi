@@ -1,0 +1,31 @@
+{% extends 'event_template.html' %}
+{% block content %}
+
+<div class="row">
+    {% if event.sidebar_content != "" %}
+    <div class="evt-about col-md-8">
+        {{
+        event.description|markdown
+        }}
+    </div>
+    <div class="well sidebar col-md-4">
+        {{
+        event.sidebar_content|safe
+        }}
+    </div>
+    {% else %}
+    <div class="evt-about col-md-12">
+        {{
+        event.description|markdown
+        }}
+    </div>
+    {% endif %}
+</div>
+<hr/>
+<div class="evt-dates">
+    <div class="well well-sm">
+        <strong>Impression dates:</strong> {{ event.impression_start }} to {{ event.impression_end }} <br/>
+        <strong>Submission dates:</strong> {{ event.submission_start }} to {{ event.submission_end }}
+    </div>
+</div>
+{% endblock %}

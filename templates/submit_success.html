@@ -1,9 +1,11 @@
-{% extends "template.html" %}
+{% extends "event_template.html" %}
 {% block style %} "text-align: center" {% endblock %}
 {% block content %}
-			{% if success %}
-			Your submission of {{name|e}} by author(s) {{author|e}} has been succesful.
-			{% else %}
-			Failed submitting. Make sure your submission is valid.
-			{% endif %}
+{% if success %}
+<div class="text-center">
+    <strong>Your submission of {{name|e}} by author(s) {{author|e}} has been successful.</strong>
+</div>
+{% else %}
+Failed submitting. Make sure your submission is valid.
+{% endif %}
 {% endblock %}

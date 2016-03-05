@@ -1,136 +1,159 @@
 from flask import Flask
-from flask import render_template, url_for, redirect, request, flash
-from wtforms import TextAreaField, TextField, IntegerField
-from wtforms.fields.html5 import URLField, EmailField
-from wtforms.validators import url, DataRequired, Email
-from flask.ext.wtf import Form
-from flask.ext.wtf import RecaptchaField
+from flask import render_template, redirect, request, flash
+from flaskext.markdown import Markdown
+from forms import SubmitForm, ImpressionForm
 import database
-from date import *
 
 # boilerplate
 app = Flask(__name__)
 app.config.from_object("config")
+Markdown(app)
 
 
-
-# app
+# routes
 @app.route('/')
-def submissions_list():
-    return render_template("about.html")
+def index():
+    return render_template("index.html")
 
-class SubmitForm(Form):
-    bms_name = TextField("Title", validators=[DataRequired()])
-    bms_author = TextField("BMS author(s) (comma separated)", description="""
-    Music composer, chart artist,
-    etc... Add details on the description field.""", validators=[DataRequired()])
-    fake_author = TextField("Fake Name",
-                            description="""This will be displayed as the artist 
-                            during impression period.
-                            Once impression period is over the real artist name
-                            will be revealed.
-                            Useful for pseudonyms.""")
-    bga_author = TextField("BGA author(s) (comma separated, optional)")
-    description = TextAreaField("Description (1024 chars)")
-    bms_link = URLField("Download URL", validators=[url(), DataRequired()])
-    bms_email = EmailField("Author E-Mail", validators=[Email()])
-    captcha = RecaptchaField()
 
-class ImpressionForm(Form):
-    author = TextField("Name")
-    rating = IntegerField("Score (1 - 100)", validators=[DataRequired()])
-    comment = TextAreaField("Comment")
-    captcha = RecaptchaField()
+@app.route('/events/')
+def events_index():
+    return render_template("events.html", events=database.get_events())
 
-@app.route('/submit/')
-def submit_bms(form=None):
+
+@app.route('/event/<int:event_id>')
+def event_index(event_id):
+    try:
+        evt = database.Event(event_id)
+        return render_template("event.html", event=evt)
+    except database.IncorrectEvent as e:
+        return render_template("section_closed.html", event=None)
+
+
+@app.route('/event/<int:event_id>/submit')
+def submit_bms(event_id, form=None):
     if form is None:
         form = SubmitForm()
-    if are_submissions_open():
-        return render_template("submit.html", form=form)
-    else:
-        return render_template("section_closed.html")
 
-@app.route('/submit/handle_submit', methods=['POST'])
-def handle_bms_submission():
-    if are_submissions_open():
-        form = SubmitForm()
-        if form.validate_on_submit():
-            name = form.bms_name.data
-            author = form.bms_author.data
-            fake_author = form.fake_author.data
-            bga_author = form.bga_author.data
-            description = form.description.data
-            link = form.bms_link.data
-            email = form.bms_email.data
-            database.insert_entry(name,
-                                  author, fake_author, bga_author,
-                                  description, link, email)
-            return render_template("submit_success.html", name=name, author=author, link=link, success=True)
-        return render_template("submit_success.html", success=False)
+    evt = database.Event(event_id)
+    if evt.are_submissions_open:
+        return render_template("submit.html", form=form, event=evt)
     else:
-        return render_template("section_closed.html")
+        return render_template("section_closed.html", event=evt)
 
-@app.route('/admin')
-def evt_admin():
-    return "evt admin"
+
+@app.route('/event/<int:event_id>/submit/handle_submit', methods=['POST'])
+def handle_bms_submission(event_id):
+    try:
+        evt = database.Event(event_id)
+        if evt.are_submissions_open:
+            form = SubmitForm()
+
+            if form.validate_on_submit():
+                name = form.bms_name.data
+                author = form.bms_author.data
+                fake_author = form.fake_author.data
+                bga_author = form.bga_author.data
+                description = form.description.data
+                link = form.bms_link.data
+                email = form.bms_email.data
+
+                evt.insert_entry(name,
+                                 author,
+                                 fake_author,
+                                 bga_author,
+                                 description,
+                                 link,
+                                 email)
+
+                return render_template("submit_success.html",
+                                       name=name,
+                                       author=author,
+                                       link=link,
+                                       event=evt,
+                                       success=True)
+            return render_template("submit_success.html",
+                                   event=evt,
+                                   success=False)
+        else:
+            return render_template("section_closed.html", event=evt)
+    except database.IncorrectEvent as e:
+        return render_template("section_closed.html", event=None)
+
+
+@app.route('/event/<int:event_id>/admin')
+def evt_admin(event_id):
+    return render_template("admin_event.html", event=database.Event(event_id))
+
 
 @app.route("/about/")
 def evt_about():
-    return render_template("about.html")
+    return render_template("index.html")
+
 
 @app.route("/bmsvsbmson/")
 def evt_vs():
     return render_template("bmson.html")
 
-@app.route("/rules/")
-def evt_rules():
-    return render_template("rules.html")
 
-@app.route("/impressions/")
-def evt_songs():
-    if can_see_submissions():
-        return render_template("impressions.html", entries=database.get_entries())
+@app.route("/event/<int:event_id>/rules/")
+def evt_rules(event_id):
+    return render_template("rules.html", event=database.Event(event_id))
+
+
+@app.route("/event/<int:event_id>/impressions/")
+def evt_songs(event_id):
+    evt = database.Event(event_id)
+    if evt.can_see_submissions:
+        return render_template("impressions.html", entries=evt.entries, event=evt)
     else:
         return render_template("section_closed.html")
 
-@app.route("/impressions/id/<id>")
-def sng_impressions(id, form=None):
+
+@app.route("/event/<int:event_id>/impressions/id/<int:song_id>")
+def sng_impressions(event_id, song_id, form=None):
     if form is None:
         form = ImpressionForm()
 
-    if can_see_submissions():
-        impressions = database.get_impressions(id)
-        sng = database.get_song_by_id(id)
-        return render_template("song_impressions.html",
-            impressions=impressions,
-            song=sng,
-            rating=database.get_song_rating(id),
-            form=form,
-            impression_count=len(impressions),
-            is_impression_period=are_impressions_open())
+    evt = database.Event(event_id)
+    if evt.can_see_submissions:
+        sng = database.get_song_by_id(song_id)
+        if sng.event_id == evt.id:
+            impressions = evt.get_impressions(sng)
+            return render_template("song_impressions.html",
+                                   impressions=impressions,
+                                   song=sng,
+                                   rating=evt.get_rating_impressions(impressions),
+                                   form=form,
+                                   impression_count=len(impressions),
+                                   is_impression_period=evt.are_impressions_open,
+                                   event=evt)
+        else:
+            return render_template("wrong_event.html")
     else:
         return render_template("section_closed.html")
 
-@app.route("/impressions/id/submit/<id>", methods=["POST"])
-def submit_impression(id):
-    if are_impressions_open():
+
+@app.route("/event/<int:event_id>/impressions/id/submit/<int:song_id>", methods=["POST"])
+def submit_impression(event_id, song_id):
+    evt = database.Event(event_id)
+    if evt.are_impressions_open:
         form = ImpressionForm()
         if form.validate_on_submit():
             author = form.author.data
             rating = form.rating.data
             comment = form.comment.data
             try:
-                rating = int(rating)
-                if rating < 0 or rating > 100:
-                    raise ValueError()
                 ip = request.environ["REMOTE_ADDR"]
-                database.insert_impression(id, author, rating, comment, ip)
-            except ValueError:
-                flash("Rating out of bounds or not a number.")
+                evt.insert_impression(song_id, author, rating, comment, ip)
+            except ValueError as e:
+                flash(str(e))
+            except database.IncorrectEvent as e:
+                flash(str(e))
         else:
             flash("Incomplete form.")
-        return redirect("/impressions/id/{}".format(id))
+
+        return redirect("/event/{}/impressions/id/{}".format(event_id, song_id))
     else:
         return render_template("section_closed.html")
 

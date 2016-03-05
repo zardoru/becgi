@@ -1,7 +1,8 @@
-{% extends "template.html" %}
+{% extends 'event_template.html' %}
 {% block style %} {% endblock %}
 {% block content %}
 
+{% if entries|length > 0 %}
 <h2 class="b-header"> Songs list </h2>
 
 <p class="description-text">
@@ -27,7 +28,7 @@
 {% for song in entries %}
     <tr>
         <td>
-            <a href="/impressions/id/{{song.id}}">{{song.name}}</a></td>
+            <a href="id/{{song.id}}">{{song.name}}</a></td>
         <td>{{song.display_name}}</td>
         <td><a href="{{song.link}}">Download</a></td>
         <td>{{song.impression_count}}</td>
@@ -35,4 +36,7 @@
 {% endfor %}
 
 </table>
+{% else %}
+<div class="text-center"><strong>No songs found yet.</strong></div>
+{% endif%}
 {% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'template.html' %}
+{% block title %}
+    {{ event.name }} @ becgi
+{% endblock %}
+{% block logo %}
+<a href="/event/{{event.id}}">
+    {% if event.banner_url != None %}
+    <img class="img-responsive" src="{{event.banner_url}}" alt=""/>
+    {% else %}
+    <h1>{{event.name}}</h1>
+    {% endif %}
+</a>
+{% endblock %}
+{% block stylesheets %}
+{% if event.css_url != None %}
+<link href="{{event.css_url}}" rel="stylesheet" type="text/css">
+{% endif %}
+{% endblock %}
+{% block extmenu %}
+{% if event.are_submissions_open %}
+<li>
+    <a href="/event/{{event.id}}/submit">
+        submit
+    </a>
+</li>
+{% endif %}
+{% if event.can_see_submissions %}
+<li>
+    <a href="/event/{{event.id}}/impressions/">
+        songs list
+    </a>
+</li>
+{% endif %}
+{% endblock %}

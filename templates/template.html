@@ -1,63 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                <meta name="viewport" content="width=device-width, initial-scale=1">
-                    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-                    <title>Be-Music West {% block title %}{% endblock %}</title>
-                    <!-- Bootstrap -->
-                    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-                    <link href='https://fonts.googleapis.com/css?family=Poiret+One|Alegreya+Sans' rel='stylesheet' type='text/css'>
-                    <link href="{{url_for('static', filename='becss.css')}}" rel='stylesheet' type='text/css'>
-		{% block head %}
-		{% endblock %}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title> {% block title %} becgi {% endblock %} </title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Poiret+One|Alegreya+Sans' rel='stylesheet' type='text/css'>
+    <link href="{{url_for('static', filename='becss.css')}}" rel='stylesheet' type='text/css'>
+    {% block stylesheets %}
+    {% endblock %}
+    {% block head %}
+    {% endblock %}
 
-                        </head>
-                        <body>
-                            <nav class="navbar navbar-default">
-                                <div class="container container-fluid">
-                                    <h1 class="navbar-header">
-                                        <div class="logo">
-                                            <img class="img-responsive" src="http://echo.s-ul.eu/YGzzTGU8.png" alt=""/>
-                                        </div>
-                                    </h1>
-                                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                                        <ul class="nav navbar-nav">
-                                            <li>
-                                                <a href="/about/">
-                                                    <strong>about</strong>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="/rules/">
-                                                    <strong>rules</strong>
-                                                </a>
-                                            </li>
-                                            <li>
-                                              <a href="/bmsvsbmson/">
-                                                <strong>bms vs bmson</strong>
-                                              </a>
-                                            </li>
-                                            <li>
-                                                <a href="/submit/">
-                                                    <strong>submit</strong>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="/impressions/">
-                                                    <strong>songs list</strong>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </nav>
-                            <div class="container container-fluid">
-                                <p class="content">
-			                            {% block content %} {% endblock %}
-		                            </p>
-                            {% include 'footer.html' %}
-                            </div>
-                        </body>
-                    </html>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container container-fluid">
+        <h1 class="navbar-header">
+            <div class="logo">
+                {% block logo %}
+                <h1 class="b-header">
+                    becgi event system
+                </h1>
+                {% endblock %}
+            </div>
+        </h1>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                {% block menu %}
+                <li>
+                    <a href="/about/">
+                        <strong>about becgi</strong>
+                    </a>
+                </li>
+                <li>
+                    <a href="/events/">
+                        <strong>event list</strong>
+                    </a>
+                </li>
+                {% endblock %}
+                {% block extmenu %}
+
+                {% endblock %}
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container container-fluid">
+    <p class="content">
+        {% block content %} {% endblock %}
+    </p>
+    {% include 'footer.html' %}
+</div>
+</body>
+</html>

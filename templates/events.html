@@ -1,0 +1,74 @@
+{% extends 'template.html' %}
+{% block content %}
+<h2>
+    Events list
+</h2>
+
+<p class="description-text">
+    You can find all hosted events in this location. <br/>
+    From here you can also choose to download the event package if available <br/>
+    submit directly from here,
+    see the event details,
+    and more.
+</p>
+<br/>
+
+<div class="row">
+    <div class="col-md-1">
+        <strong>event</strong>
+    </div>
+    <div class="col-md-2">
+        <strong>organizers</strong>
+    </div>
+    <div class="col-md-3">
+        <strong>impression dates</strong>
+    </div>
+    <div class="col-md-3">
+        <strong>submission dates</strong>
+    </div>
+    <div class="col-md-3">
+        <strong>options</strong>
+    </div>
+</div>
+<hr/>
+{% for event in events %}
+<div class="row">
+    <div class="col-md-1">
+        <a href="/event/{{event.id}}">
+            {{ event.name }}
+        </a>
+    </div>
+    <div class="col-md-2">
+        {{ event.organizers }}
+    </div>
+    <div class="col-md-3">
+        <strong>{{ event.impression_start }}</strong> to <strong>{{ event.impression_end }}</strong>
+    </div>
+    <div class="col-md-3">
+        <strong>{{ event.submission_start }}</strong> to <strong>{{ event.submission_end }}</strong>
+    </div>
+    {% if event.download_package != "" and event.download_package %}
+    <div class="col-md-1">
+        <a class="btn btn-default" href="{{event.download_package}}">
+            download
+        </a>
+    </div>
+    {% endif %}
+    {% if event.can_see_submissions %}
+    <div class="col-md-1">
+        <a class="btn btn-primary" href="/event/{{event.id}}/impressions">
+            song list
+        </a>
+    </div>
+    {% endif %}
+    {% if event.are_submissions_open %}
+    <div class="col-md-1">
+        <a class="btn btn-primary" href="/event/{{event.id}}/submit">
+            submit
+        </a>
+    </div>
+    {% endif %}
+
+</div>
+{% endfor %}
+{% endblock %}
