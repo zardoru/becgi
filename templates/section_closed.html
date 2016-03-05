@@ -1,4 +1,8 @@
-{% extends "template.html" %}
+{% if event %}
+{% extends "event_template.html" %}
+{% else %}
+{% extends 'template.html' %}
+{% endif %}
 {% block content %}
 <div class="text-center b-header">
     <strong>This section is currently closed.</strong>

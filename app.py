@@ -115,23 +115,26 @@ def sng_impressions(event_id, song_id, form=None):
     if form is None:
         form = ImpressionForm()
 
-    evt = database.Event(event_id)
-    if evt.can_see_submissions:
-        sng = database.get_song_by_id(song_id)
-        if sng.event_id == evt.id:
-            impressions = evt.get_impressions(sng)
-            return render_template("song_impressions.html",
-                                   impressions=impressions,
-                                   song=sng,
-                                   rating=evt.get_rating_impressions(impressions),
-                                   form=form,
-                                   impression_count=len(impressions),
-                                   is_impression_period=evt.are_impressions_open,
-                                   event=evt)
+    try:
+        evt = database.Event(event_id)
+        if evt.can_see_submissions:
+            sng = database.get_song_by_id(song_id)
+            if sng.event_id == evt.id:
+                impressions = evt.get_impressions(sng)
+                return render_template("song_impressions.html",
+                                       impressions=impressions,
+                                       song=sng,
+                                       rating=evt.get_rating_impressions(impressions),
+                                       form=form,
+                                       impression_count=len(impressions),
+                                       is_impression_period=evt.are_impressions_open,
+                                       event=evt)
+            else:
+                return render_template("wrong_event.html")
         else:
-            return render_template("wrong_event.html")
-    else:
-        return render_template("section_closed.html")
+            return render_template("section_closed.html", event=evt)
+    except database.IncorrectEvent as e:
+        return render_template("section_closed.html", event=None)
 
 
 @app.route("/event/<int:event_id>/impressions/id/submit/<int:song_id>", methods=["POST"])

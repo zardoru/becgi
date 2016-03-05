@@ -4,7 +4,7 @@
 {% endblock %}
 {% block logo %}
 <a href="/event/{{event.id}}">
-    {% if event.banner_url != None %}
+    {% if event.banner_url and event.banner_url != "" %}
     <img class="img-responsive" src="{{event.banner_url}}" alt=""/>
     {% else %}
     <h1>{{event.name}}</h1>
@@ -12,7 +12,7 @@
 </a>
 {% endblock %}
 {% block stylesheets %}
-{% if event.css_url != None %}
+{% if event.css_url and event.css_url != "" %}
 <link href="{{event.css_url}}" rel="stylesheet" type="text/css">
 {% endif %}
 {% endblock %}

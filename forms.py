@@ -17,7 +17,7 @@ class SubmitForm(Form):
                             will be revealed.
                             Useful for pseudonyms.""")
     bga_author = StringField("BGA author(s) (comma separated, optional)")
-    description = TextAreaField("Description (1024 chars)")
+    description = TextAreaField("Description")
     bms_link = URLField("Download URL", validators=[url(), DataRequired()])
     bms_email = EmailField("Author E-Mail", validators=[Email()])
     captcha = RecaptchaField()

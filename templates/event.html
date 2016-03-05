@@ -2,7 +2,7 @@
 {% block content %}
 
 <div class="row">
-    {% if event.sidebar_content != "" %}
+    {% if event.sidebar_content != "" and event.sidebar_content %}
     <div class="evt-about col-md-8">
         {{
         event.description|markdown
@@ -23,7 +23,7 @@
 </div>
 <hr/>
 <div class="evt-dates">
-    <div class="well well-sm">
+    <div class="well well-sm text-center">
         <strong>Impression dates:</strong> {{ event.impression_start }} to {{ event.impression_end }} <br/>
         <strong>Submission dates:</strong> {{ event.submission_start }} to {{ event.submission_end }}
     </div>
