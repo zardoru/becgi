@@ -132,7 +132,7 @@ def event_song_impressions(event_id, song_id, form=None):
         return render_template("section_closed.html", event=None)
 
 
-@app.route("/event/<int:event_id>/impressions/id/submit/<int:song_id>", methods=["POST"])
+@app.route("/event/<int:event_id>/impressions/id/<int:song_id>/submit", methods=["POST"])
 def event_submit_impression(event_id, song_id):
     evt = database.Event(event_id)
     if evt.are_impressions_open:

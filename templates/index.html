@@ -3,9 +3,28 @@
 
 <div class="row">
   <div class="col-md-12">
-    <h1 class="b-header" id="about">About</h1>
     <p class="description-text">
+		{% filter markdown %}
+#becgi @ Keysounds
 
+## About
+becgi is an open-source BMS event venue code that runs on Python 3.4  
+Anyone can download the code and run it on their website if they wish.  
+This code was originally used for Be-Music West and has been improved since.  
+We are now hosting becgi here on Keysounds.
+
+**becgi supports markdown on comments, descriptions and event rules.**
+
+The code was created with the intention of being used for small-scale events,  
+or events that use special rules, e.g. for score calculation.  
+By making this venue open-source it is also possible  
+for anyone to host a BMS event on their website!  
+We also want to make BMS events more accessible to the English-speaking community,
+which is how Be-Music West started.
+
+The server is owned by Dolphin, whilst the becgi code is written by Agka.
+
+		{% endfilter %}
     </p>
   </div>
 </div>
