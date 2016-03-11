@@ -20,6 +20,7 @@ becgi supports the basics such as:
   * Comment
   * Score
 * Multiple event support
+* Markdown Formatting (via Database)
 
 
 **To be able to run this code you need to create a config.py containing reCAPTCHA authentication keys and a secret key. See the included example config.**
