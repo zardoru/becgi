@@ -17,7 +17,8 @@ class SubmitForm(Form):
                             will be revealed.
                             Useful for pseudonyms.""")
     bga_author = StringField("BGA author(s) (comma separated, optional)")
-    description = TextAreaField("Description")
+    description = TextAreaField("Description", description="""
+    Entry description (supports markdown)""")
     bms_link = URLField("Download URL", validators=[url(), DataRequired()])
     bms_email = EmailField("Author E-Mail", validators=[Email()])
     captcha = RecaptchaField()
@@ -25,9 +26,9 @@ class SubmitForm(Form):
 
 
 class ImpressionForm(Form):
-    author = StringField("Name")
+    author = StringField("Name (Anonymous if left blank)")
     rating = IntegerField("Score")
-    comment = TextAreaField("Comment")
+    comment = TextAreaField("Comment (supports markdown)")
     captcha = RecaptchaField()
 
 

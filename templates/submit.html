@@ -61,7 +61,7 @@
             {{ do_field(form.bms_email) }}
             {{ do_field(form.captcha) }}
             {% if modify %}
-                {{ do_field(form.token) }}
+                {{ form.token }}
             {% endif %}
         </table>
         <hr/>

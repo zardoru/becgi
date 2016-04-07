@@ -146,6 +146,12 @@ class Event:
             return True
 
     @property
+    def allow_blank_comments(self):
+        if self.scoring_method == Scoring.NONE:
+            return False
+        return True
+
+    @property
     def are_impressions_open(self):
         if not DEBUG:
             return self.impression_start <= datetime.utcnow() <= self.impression_end
