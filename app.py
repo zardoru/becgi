@@ -46,45 +46,52 @@ def event_submit(event_id, form=None):
 @app.route('/event/<int:event_id>/entry/<int:song_id>/edit/', methods=['POST'])
 def event_edit_entry(event_id, song_id):
     evt = database.Event(event_id)
-    pwform = SongPasswordForm()
-    if pwform.validate_on_submit():
-        form = SubmitForm()
-        song = database.get_song_by_token_and_id(pwform.token.data, song_id)
-        if song:
-            form.bga_author.default = song.bga_author
-            form.bms_author.default = song.author
-            form.bms_email.default = song.email
-            form.bms_link.default = song.link
-            form.bms_name.default = song.name
-            form.description.default = song.description
-            form.fake_author.default = song.fake_author
-            form.token.default = song.token  # token is valid anyway
-            form.process()  # actually set the defaults
+    if evt.are_submissions_open:
+        pwform = SongPasswordForm()
+        if pwform.validate_on_submit():
+            form = SubmitForm()
+            song = database.get_song_by_token_and_id(pwform.token.data, song_id)
+            if song:
+                form.bga_author.default = song.bga_author
+                form.bms_author.default = song.author
+                form.bms_email.default = song.email
+                form.bms_link.default = song.link
+                form.bms_name.default = song.name
+                form.description.default = song.description
+                form.fake_author.default = song.fake_author
+                form.token.default = song.token  # token is valid anyway
+                form.process()  # actually set the defaults
 
-            # okay we're set, modification in progress
-            return render_template("submit.html", event=evt, form=form, modify=True, song=song)
+                # okay we're set, modification in progress
+                return render_template("submit.html", event=evt, form=form, modify=True, song=song)
+            else:
+                # logging.error("Null song.")
+                return render_template("section_closed.html", event=evt)
         else:
-            logging.error("Null song.")
+            # logging.error("Null form.")
             return render_template("section_closed.html", event=evt)
     else:
-        logging.error("Null form.")
+        # Invalid event?
         return render_template("section_closed.html", event=evt)
 
 
 @app.route('/event/<int:event_id>/entry/<int:song_id>/update', methods=['POST'])
 def event_update_entry(event_id, song_id):
     evt = database.Event(event_id)
-    form = SubmitForm()
-    if form.validate_on_submit():
-        evt.update_entry(form.bms_name.data,
-                         form.bms_author.data,
-                         form.fake_author.data,
-                         form.bga_author.data,
-                         form.description.data,
-                         form.bms_link.data,
-                         form.bms_email.data,
-                         song_id, form.token.data)
-    return redirect(url_for('event_song_impressions', event_id=event_id, song_id=song_id))
+    if evt.are_submissions_open:
+        form = SubmitForm()
+        if form.validate_on_submit():
+            evt.update_entry(form.bms_name.data,
+                             form.bms_author.data,
+                             form.fake_author.data,
+                             form.bga_author.data,
+                             form.description.data,
+                             form.bms_link.data,
+                             form.bms_email.data,
+                             song_id, form.token.data)
+        return redirect(url_for('event_song_impressions', event_id=event_id, song_id=song_id))
+    else:
+        return render_template("section_closed.html", event=evt)
 
 
 @app.route('/event/<int:event_id>/submit/handle_submit', methods=['POST'])

@@ -31,6 +31,7 @@
 </center>
 <br/>
 
+{% if event.are_submissions_open %}
 <div class="text-center">
     <form action="{{url_for('event_edit_entry', event_id=event.id, song_id=song.id)}}" method="post">
         {{ pwform.csrf_token }}
@@ -39,6 +40,7 @@
         <input type="submit" value="Modify Entry"/>
     </form>
 </div>
+{% endif %}
 
 <br/> <br/>
 <hr/>
