@@ -1,11 +1,11 @@
 from math import log10
-import os
 import psycopg2
 from urllib.parse import urlparse
 from datetime import datetime
 from config import *
+from dbtoken import create_token
 
-# heroku database_url!
+# postgres://user:password@server:port/database i think
 url = urlparse(os.environ["DATABASE_URL"])
 
 conn = psycopg2.connect(
@@ -16,7 +16,9 @@ conn = psycopg2.connect(
     port=url.port
 )
 
-from_iso_date = lambda x: datetime.strptime(x, "%Y-%m-%d")
+
+def from_iso_date(x):
+    return datetime.strptime(x, "%Y-%m-%d")
 
 
 class Scoring(object):
@@ -40,7 +42,8 @@ class Song(object):
                  email,
                  song_id,
                  event_id,
-                 cnt):
+                 cnt,
+                 tok):
         self.name = name
         self.author = author
         self.fake_author = fake_author
@@ -51,6 +54,7 @@ class Song(object):
         self.id = song_id
         self.event_id = event_id
         self.impression_count = cnt
+        self.token = tok
 
         evt = Event(event_id)
         if evt.use_fake_name:
@@ -97,6 +101,10 @@ class Event:
 
         # flags
         self.use_fake_name = row[15]
+
+        # token
+        self.token = row[16]
+
         return self
 
     def __init__(self, event_id=None):
@@ -117,6 +125,7 @@ class Event:
         self.submission_end = now
         self.scoring_method = Scoring.NONE
         self.use_fake_name = False
+        self.token = ""
 
         if event_id:
             # Create object from id
@@ -172,7 +181,8 @@ class Event:
         entry.email,
         entry.id,
         entry.event_id,
-        COUNT(impression.id)
+        COUNT(impression.id),
+        entry.token
      FROM entry
      LEFT JOIN impression ON entry.id=impression.parent_entry
      WHERE entry.event_id=%s
@@ -185,10 +195,33 @@ class Event:
 
     def insert_entry(self, name, author, fake_author, bga_author, description, link, email):
         c = conn.cursor()
+        tok = create_token()
+
         c.execute("""INSERT INTO entry
-        (event_id, name,author,fake_author,bga_author,description,url,email)
-        VALUES (%s,%s,%s,%s,%s,%s,%s,%s)""",
-                  (self.id, name, author, fake_author, bga_author, description, link, email))
+        (event_id, name,author,fake_author,bga_author,description,url,email,token)
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
+                  (self.id, name, author, fake_author, bga_author, description, link, email, tok))
+        conn.commit()
+        return tok
+
+    def update_entry(self, name, author, fake_author, bga_author, description, link, email, sid, tok):
+        c = conn.cursor()
+        c.execute("""UPDATE entry SET
+                    name=%s,
+                    author=%s,
+                    fake_author=%s,
+                    bga_author=%s,
+                    description=%s,
+                    url=%s,
+                    email=%s
+                    WHERE id=%s AND token=%s""", (name,
+                                                  author,
+                                                  fake_author,
+                                                  bga_author,
+                                                  description,
+                                                  link,
+                                                  email,
+                                                  sid, tok))
         conn.commit()
 
     def get_impressions(self, song):
@@ -208,11 +241,14 @@ class Event:
 
     def get_rating_impressions(self, impressions):
         if self.scoring_method == Scoring.BMWEST_16:
-            score = sum(int(x.rating) for x in impressions)
-            if len(impressions):
-                return round(log10(len(impressions) + 1) * score / float(len(impressions)), 2)
-            else:
-                return 0
+            return self.bmwest_scoring(impressions)
+        else:
+            return 0
+
+    def bmwest_scoring(self, impressions):
+        score = sum(int(x.rating) for x in impressions)
+        if len(impressions):
+            return round(log10(len(impressions) + 1) * score / float(len(impressions)), 2)
         else:
             return 0
 
@@ -276,10 +312,38 @@ def get_song_by_id(song_id):
         entry.email,
         entry.id,
         entry.event_id,
-        COUNT(impression.id)
+        COUNT(impression.id),
+        entry.token
      FROM entry
      LEFT JOIN impression ON entry.id=impression.parent_entry
      WHERE entry.id = %s
      GROUP BY entry.id; """, (song_id,))
     for row in c.fetchall():
         return Song(*row)
+    return None
+
+
+def get_song_by_token_and_id(token, song_id):
+    c = conn.cursor()
+    c.execute("""
+    SELECT
+        entry.name,
+        entry.author,
+        entry.fake_author,
+        entry.bga_author,
+        entry.description,
+        entry.url,
+        entry.email,
+        entry.id,
+        entry.event_id,
+        COUNT(impression.id),
+        entry.token
+     FROM entry
+     LEFT JOIN impression ON entry.id=impression.parent_entry
+     WHERE entry.token = %s AND entry.id = %s
+     GROUP BY entry.id; """, (token, song_id))
+    for row in c.fetchall():
+        return Song(*row)
+    return None
+
+

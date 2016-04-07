@@ -2,57 +2,74 @@
 {% block head %}
 <script src='https://www.google.com/recaptcha/api.js'></script>
 {% endblock %}
+
+{% macro do_field(field) %}
+    <tr>
+        <td>{{ field.label }}</td>
+        <td>{{ field(**kwargs)|safe }}</td>
+    </tr>
+
+    {% if field.errors %}
+    <tr>
+        <div class="alert alert-danger">
+            <ul>
+                {% for error in field.errors %}
+                    <li>{{error}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </tr>
+    {% endif %}
+{% endmacro %}
+
+{% macro frmurl() %}
+    {% if modify %}
+        {{url_for('event_update_entry', event_id=event.id, song_id=song.id)}}
+    {% else %}
+        {{url_for('event_handle_submission', event_id=event.id)}}
+    {% endif %}
+{% endmacro %}
+
 {% block content %}
-<h2 class="b-header"> Submit entry to {{event.name}}!</h2>
+<h2 class="b-header">
+    {% if modify: %}
+    Update entry for {{event.name}}!
+    {% else %}
+    Submit entry to {{event.name}}!
+    {% endif %}
+</h2>
 <br/>
 <center>
     <p class="description-text">
-        Fill in all the details below. </br>
-        Try to leave a valid email.</br>
-        Any modifications to your entry </br>
-        must be sent to the event e-mail at <strong>{{event.email}}</strong>  </br>
-        from the email you've put in here, or else they will be ignored! </br>
+        Fill in all the details below. <br/>
+        Try to leave a valid email.<br/>
+        Any modifications to your entry <br/>
+        must be sent to the event e-mail at <strong>{{event.email}}</strong>  <br/>
+        from the email you've put in here, or else they will be ignored! <br/>
     </p>
-    <form action="{{url_for('event_handle_submission', event_id=event.id)}}" method="post">
+    <form action="{{frmurl()}}" method="post">
         {{form.csrf_token}}
         <table class="table submit-table content">
-            <tr>
-                <td>{{form.bms_name.label}}</td>
-                <td>{{form.bms_name}}</td>
-            </tr>
-            <tr>
-                <td>{{form.bms_author.label}}<br/>{{form.bms_author.description}}</td>
-                <td>{{form.bms_author}}</td>
-            </tr>
+            {{ do_field(form.bms_name) }}
+            {{ do_field(form.bms_author) }}
             {% if event.use_fake_name %}
-            <tr>
-                <td>{{form.fake_author.label}}<br/>{{form.fake_author.description}}</td>
-                <td>{{form.fake_author}}</td>
-            </tr>
+               {{ do_field(form.fake_author) }}
             {% endif %}
-            <tr>
-                <td>{{form.bga_author.label}}</td>
-                <td>{{form.bga_author}}</td>
-            </tr>
-            <tr>
-                <td>{{form.description.label}}</td>
-                <td>{{form.description}}</td>
-            </tr>
-            <tr>
-                <td>{{form.bms_link.label}}</td>
-                <td>{{form.bms_link}}</td>
-            </tr>
-            <tr>
-                <td>{{form.bms_email.label}}</td>
-                <td>{{form.bms_email}}</td>
-            </tr>
-            <tr>
-                <td>Captcha</td>
-                <td>{{form.captcha}}</td>
-            </tr>
+            {{ do_field(form.bga_author) }}
+            {{ do_field(form.description) }}
+            {{ do_field(form.bms_link) }}
+            {{ do_field(form.bms_email) }}
+            {{ do_field(form.captcha) }}
+            {% if modify %}
+                {{ do_field(form.token) }}
+            {% endif %}
         </table>
         <hr/>
+        {% if modify %}
+        <input type="submit" value="Update entry!">
+        {% else %}
         <input type="submit" value="Submit entry!">
+        {% endif %}
     </form>
 </center>
 {% endblock %}

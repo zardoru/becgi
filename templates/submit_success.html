@@ -3,7 +3,9 @@
 {% block content %}
 {% if success %}
 <div class="text-center">
-    <strong>Your submission of {{name|e}} by author(s) {{author|e}} has been successful.</strong>
+    <strong>Your submission of {{name|e}} by author(s) {{author|e}} has been successful.</strong> <br/>
+    To modify your entry, make sure to save the following registration password: <strong>{{ token }}</strong> <br/>
+    You will be asked to put this token when you want to update your entry.
 </div>
 {% else %}
 Failed submitting. Make sure your submission is valid.

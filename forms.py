@@ -1,4 +1,4 @@
-from wtforms import TextAreaField, StringField, IntegerField
+from wtforms import TextAreaField, StringField, IntegerField, HiddenField
 from wtforms.fields.html5 import URLField, EmailField
 from wtforms.validators import url, DataRequired, Email
 from flask.ext.wtf import Form
@@ -21,6 +21,7 @@ class SubmitForm(Form):
     bms_link = URLField("Download URL", validators=[url(), DataRequired()])
     bms_email = EmailField("Author E-Mail", validators=[Email()])
     captcha = RecaptchaField()
+    token = HiddenField("Registration password")
 
 
 class ImpressionForm(Form):
@@ -28,3 +29,9 @@ class ImpressionForm(Form):
     rating = IntegerField("Score")
     comment = TextAreaField("Comment")
     captcha = RecaptchaField()
+
+
+class SongPasswordForm(Form):
+    token = StringField("Registration password")
+
+

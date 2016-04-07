@@ -24,11 +24,22 @@
 <hr/>
 <h3 class="text-center"> Description </h3>
 <div class="well well-sm">
-    {{ song.description|markdown }}
+    {{ song.description|e|markdown }}
 </div>
 <center>
     <a class="btn btn-default" href="{{song.link}}"><h4> Download </h4></a>
 </center>
+<br/>
+
+<div class="text-center">
+    <form action="{{url_for('event_edit_entry', event_id=event.id, song_id=song.id)}}" method="post">
+        {{ pwform.csrf_token }}
+        {{ pwform.token.label }} <br/>
+        {{ pwform.token }} <br/>
+        <input type="submit" value="Modify Entry"/>
+    </form>
+</div>
+
 <br/> <br/>
 <hr/>
 
@@ -59,12 +70,13 @@
     {% if impression.comment != "": %}
     <b>Comment</b> <br/>
   <span class="text-left">
-  {{ impression.comment|markdown }}
+  {{ impression.comment|e|markdown }}
   </span>
     {% endif %}
 </div>
 {% endfor %}
 {% endif %}
+
 
 {% if is_impression_period: %}
 <center>
@@ -95,6 +107,8 @@
         <input type="submit" value="Submit impression"/>
     </form>
 </center>
+
+<br/>
 {% endif %}
 
 {% endblock %}

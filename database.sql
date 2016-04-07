@@ -14,7 +14,8 @@ CREATE TABLE IF NOT EXISTS event (
   submission_start date,
   submission_end date,
   scoring_method INTEGER,
-  use_fake_name boolean
+  use_fake_name boolean,
+  token text UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS entry (
@@ -27,6 +28,7 @@ CREATE TABLE IF NOT EXISTS entry (
   url text,
   email text,
   event_id INTEGER,
+  token text,
   FOREIGN KEY(event_id) REFERENCES event(id)
 );
 

@@ -1,8 +1,9 @@
 from flask import Flask
-from flask import render_template, redirect, request, flash
+from flask import render_template, redirect, request, flash, url_for
 from flaskext.markdown import Markdown
-from forms import SubmitForm, ImpressionForm
+from forms import SubmitForm, ImpressionForm, SongPasswordForm
 import database
+import logging
 
 # boilerplate
 app = Flask(__name__)
@@ -42,6 +43,50 @@ def event_submit(event_id, form=None):
         return render_template("section_closed.html", event=evt)
 
 
+@app.route('/event/<int:event_id>/entry/<int:song_id>/edit/', methods=['POST'])
+def event_edit_entry(event_id, song_id):
+    evt = database.Event(event_id)
+    pwform = SongPasswordForm()
+    if pwform.validate_on_submit():
+        form = SubmitForm()
+        song = database.get_song_by_token_and_id(pwform.token.data, song_id)
+        if song:
+            form.bga_author.default = song.bga_author
+            form.bms_author.default = song.author
+            form.bms_email.default = song.email
+            form.bms_link.default = song.link
+            form.bms_name.default = song.name
+            form.description.default = song.description
+            form.fake_author.default = song.fake_author
+            form.token.default = song.token  # token is valid anyway
+            form.process()  # actually set the defaults
+
+            # okay we're set, modification in progress
+            return render_template("submit.html", event=evt, form=form, modify=True, song=song)
+        else:
+            logging.error("Null song.")
+            return render_template("section_closed.html", event=evt)
+    else:
+        logging.error("Null form.")
+        return render_template("section_closed.html", event=evt)
+
+
+@app.route('/event/<int:event_id>/entry/<int:song_id>/update', methods=['POST'])
+def event_update_entry(event_id, song_id):
+    evt = database.Event(event_id)
+    form = SubmitForm()
+    if form.validate_on_submit():
+        evt.update_entry(form.bms_name.data,
+                         form.bms_author.data,
+                         form.fake_author.data,
+                         form.bga_author.data,
+                         form.description.data,
+                         form.bms_link.data,
+                         form.bms_email.data,
+                         song_id, form.token.data)
+    return redirect(url_for('event_song_impressions', event_id=event_id, song_id=song_id))
+
+
 @app.route('/event/<int:event_id>/submit/handle_submit', methods=['POST'])
 def event_handle_submission(event_id):
     try:
@@ -58,21 +103,23 @@ def event_handle_submission(event_id):
                 link = form.bms_link.data
                 email = form.bms_email.data
 
-                evt.insert_entry(name,
-                                 author,
-                                 fake_author,
-                                 bga_author,
-                                 description,
-                                 link,
-                                 email)
+                token = evt.insert_entry(name,
+                                         author,
+                                         fake_author,
+                                         bga_author,
+                                         description,
+                                         link,
+                                         email)
 
                 return render_template("submit_success.html",
                                        name=name,
                                        author=author,
                                        link=link,
                                        event=evt,
+                                       token=token,
                                        success=True)
-            return render_template("submit_success.html",
+            return render_template("submit.html",
+                                   form=form,
                                    event=evt,
                                    success=False)
         else:
@@ -106,9 +153,12 @@ def event_songs(event_id):
 
 
 @app.route("/event/<int:event_id>/impressions/id/<int:song_id>")
-def event_song_impressions(event_id, song_id, form=None):
+def event_song_impressions(event_id, song_id, form=None, pwform=None):
     if form is None:
         form = ImpressionForm()
+
+    if pwform is None:
+        pwform = SongPasswordForm()
 
     try:
         evt = database.Event(event_id)
@@ -121,6 +171,7 @@ def event_song_impressions(event_id, song_id, form=None):
                                        song=sng,
                                        rating=evt.get_rating_impressions(impressions),
                                        form=form,
+                                       pwform=pwform,
                                        impression_count=len(impressions),
                                        is_impression_period=evt.are_impressions_open,
                                        event=evt)
@@ -151,7 +202,7 @@ def event_submit_impression(event_id, song_id):
         else:
             flash("Incomplete form.")
 
-        return redirect("/event/{}/impressions/id/{}".format(event_id, song_id))
+        return redirect(url_for('event_song_impressions', event_id=event_id, song_id=song_id))
     else:
         return render_template("section_closed.html")
 
