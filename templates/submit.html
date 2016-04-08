@@ -4,13 +4,13 @@
 {% endblock %}
 
 {% macro do_field(field) %}
-    <tr>
-        <td>{{ field.label }}</td>
-        <td>{{ field(**kwargs)|safe }}</td>
-    </tr>
+    <div class="row">
+        <div class="col-md-5 text-left">{{ field.label }}<br/>{{ field.description }}</div>
+        <div class="col-md-7 full-input-width">{{ field(**kwargs)|safe }}</div>
+    </div> <br/>
 
     {% if field.errors %}
-    <tr>
+    <div class="row">
         <div class="alert alert-danger">
             <ul>
                 {% for error in field.errors %}
@@ -18,7 +18,7 @@
                 {% endfor %}
             </ul>
         </div>
-    </tr>
+    </div> <br/>
     {% endif %}
 {% endmacro %}
 
@@ -41,15 +41,16 @@
 <br/>
 <center>
     <p class="description-text">
-        Fill in all the details below. <br/>
+        Fill in all the details below.
         Try to leave a valid email.<br/>
-        Any modifications to your entry <br/>
+        If you lose your token, any modifications to your entry
         must be sent to the event e-mail at <strong>{{event.email}}</strong>  <br/>
         from the email you've put in here, or else they will be ignored! <br/>
     </p>
+    <br/>
     <form action="{{frmurl()}}" method="post">
         {{form.csrf_token}}
-        <table class="table submit-table content">
+        <div class="submit-table full-width content well well-lg">
             {{ do_field(form.bms_name) }}
             {{ do_field(form.bms_author) }}
             {% if event.use_fake_name %}
@@ -63,13 +64,13 @@
             {% if modify %}
                 {{ form.token }}
             {% endif %}
-        </table>
-        <hr/>
-        {% if modify %}
-        <input type="submit" value="Update entry!">
-        {% else %}
-        <input type="submit" value="Submit entry!">
-        {% endif %}
+
+            {% if modify %}
+            <input type="submit" value="Update entry!">
+            {% else %}
+            <input type="submit" value="Submit entry!">
+            {% endif %}
+        </div>
     </form>
 </center>
 {% endblock %}

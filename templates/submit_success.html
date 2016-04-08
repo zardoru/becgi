@@ -1,5 +1,16 @@
 {% extends "event_template.html" %}
 {% block style %} "text-align: center" {% endblock %}
+{% block head %}
+{% if success %}
+<script>
+    window.addEventHandler("beforeunload", function(e) {
+        var msg = "Make sure to write down the registration password before you leave!";
+        e.returnValue = msg;
+        return msg;
+    });
+</script>
+{% endif %}
+{% endblock %}
 {% block content %}
 {% if success %}
 <div class="text-center">

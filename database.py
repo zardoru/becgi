@@ -4,6 +4,7 @@ from urllib.parse import urlparse
 from datetime import datetime
 from config import *
 from dbtoken import create_token
+import logging
 
 # postgres://user:password@server:port/database i think
 url = urlparse(os.environ["DATABASE_URL"])
@@ -353,3 +354,35 @@ def get_song_by_token_and_id(token, song_id):
     return None
 
 
+def from_scoring_name(x):  # must match the values at form
+    if x == "bmwest2016":
+        return Scoring.BMWEST_16
+    else:
+        return Scoring.NONE
+
+
+def update_event(*row):
+    c = conn.cursor()
+    row = list(row)
+    row[12] = from_scoring_name(row[12])
+    row = tuple(row)
+    c.execute("""UPDATE event SET
+              name=%s,
+              description=%s,
+              organizers=%s,
+              download_url=%s,
+              email=%s,
+              twitter_handle=%s,
+              banner_url=%s,
+              css_url=%s,
+              impression_start=%s,
+              impression_end=%s,
+              submission_start=%s,
+              submission_end=%s,
+              scoring_method=%s,
+              use_fake_name=%s
+              WHERE id=%s AND token=%s
+              """, row)
+    logging.info(row)
+    conn.commit()
+    return None

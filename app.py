@@ -1,7 +1,9 @@
 from flask import Flask
 from flask import render_template, redirect, request, flash, url_for
 from flaskext.markdown import Markdown
-from forms import SubmitForm, ImpressionForm, SongPasswordForm
+
+import forms
+from forms import SubmitForm, ImpressionForm, SongPasswordForm, EventForm
 import database
 import logging
 
@@ -135,9 +137,65 @@ def event_handle_submission(event_id):
         return render_template("section_closed.html", event=None)
 
 
+@app.route('/event/<int:event_id>/update', methods=['POST'])
+def event_update(event_id):
+    form = EventForm()
+    if form.validate_on_submit():
+        do_update_event(event_id, form)
+        if form.token.data != database.Event(event_id).token:
+            flash("Invalid token.")
+            return redirect(url_for("event_admin", event_id=event_id))
+
+        return redirect(url_for('event_index', event_id=event_id))
+    else:
+        flash("There's been errors validating your request. Look below for details.")
+        #for field, errors in form.errors.items():
+        #    for error in errors:
+        #        flash(field + " " + error)
+        return render_template("event_edit.html", event=database.Event(event_id), form=form)
+
+
 @app.route('/event/<int:event_id>/admin')
-def event_admin(event_id):
-    return render_template("admin_event.html", event=database.Event(event_id))
+def event_admin(event_id, form=None):
+    if form is None:
+        form = EventForm()
+
+    evt = database.Event(event_id)
+    form.name.default = evt.name
+    form.description.default = evt.description
+    form.organizers.default = evt.organizers
+    form.package_url.default = evt.download_package
+    form.email.default = evt.email
+    form.twitter.default = evt.twitter
+    form.banner_url.default = evt.banner_url
+    form.css_url.default = evt.css_url
+    form.impression_start.default = evt.impression_start
+    form.impression_end.default = evt.impression_end
+    form.submission_start.default = evt.submission_start
+    form.submission_end.default = evt.submission_end
+    form.scoring_method.default = forms.score_choices[evt.scoring_method][0]
+    form.fake_name.default = evt.use_fake_name
+    form.process()
+
+    return render_template("event_edit.html", event=evt, form=form)
+
+
+def do_update_event(event_id, form):
+    database.update_event(form.name.data,
+                          form.description.data,
+                          form.organizers.data,
+                          form.package_url.data,
+                          form.email.data,
+                          form.twitter.data,
+                          form.banner_url.data,
+                          form.css_url.data,
+                          form.impression_start.data,
+                          form.impression_end.data,
+                          form.submission_start.data,
+                          form.submission_end.data,
+                          form.scoring_method.data,
+                          form.fake_name.data,
+                          event_id, form.token.data)
 
 
 @app.route("/about/")

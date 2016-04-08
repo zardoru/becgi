@@ -1,0 +1,51 @@
+{% extends 'event_template.html' %}
+{% macro do_field(field) %}
+    <div class="row">
+        <div class="col-md-5">
+            {{field.label}} <br/>
+            {{field.description}}
+            {% if field.errors %}
+                {% for error in field.errors %}
+                <div class="alert alert-danger">
+                    {{ error }}
+                </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="col-md-7 full-input-width">
+            {{field(**kwargs)|safe}}
+        </div>
+    </div>
+    <br/>
+{% endmacro %}
+
+
+{% block content %}
+{% with errors = get_flashed_messages() %}
+{% for err in errors %}
+<div class="alert alert-danger">
+    {{ err }}
+</div>
+{% endfor %}
+{% endwith %}
+
+<form action="{{url_for('event_update', event_id=event.id)}}" method="post">
+    {{ form.csrf_token }}
+    {{ do_field(form.name) }}
+    {{ do_field(form.description) }}
+    {{ do_field(form.organizers) }}
+    {{ do_field(form.package_url) }}
+    {{ do_field(form.email) }}
+    {{ do_field(form.twitter) }}
+    {{ do_field(form.banner_url) }}
+    {{ do_field(form.css_url) }}
+    {{ do_field(form.impression_start) }}
+    {{ do_field(form.impression_end) }}
+    {{ do_field(form.submission_start) }}
+    {{ do_field(form.submission_end) }}
+    {{ do_field(form.scoring_method) }}
+    {{ do_field(form.fake_name) }}
+    {{ do_field(form.token) }}
+    <input type="submit" value="Update event"/>
+</form>
+{% endblock %}
