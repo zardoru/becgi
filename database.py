@@ -98,7 +98,7 @@ class Event:
         self.submission_end = row[13]
 
         # scoring method
-        self.scoring_method = int(row[14])
+        self.scoring_method = int(row[14]) if row[14] else 0
 
         # flags
         self.use_fake_name = row[15]
@@ -109,7 +109,7 @@ class Event:
         return self
 
     def __init__(self, event_id=None):
-        now = datetime.utcnow()
+        now = datetime.utcnow().date()
         self.id = event_id
         self.name = ""
         self.description = ""
@@ -142,7 +142,7 @@ class Event:
     @property
     def are_submissions_open(self):
         if not DEBUG:
-            return self.submission_start <= datetime.utcnow() <= self.submission_end
+            return self.submission_start <= datetime.utcnow().date() <= self.submission_end
         else:
             return True
 
@@ -155,21 +155,21 @@ class Event:
     @property
     def are_impressions_open(self):
         if not DEBUG:
-            return self.impression_start <= datetime.utcnow() <= self.impression_end
+            return self.impression_start <= datetime.utcnow().date() <= self.impression_end
         else:
             return True
 
     @property
     def can_see_submissions(self):
         if not DEBUG:
-            return self.submission_start <= datetime.utcnow()
+            return self.submission_start <= datetime.utcnow().date()
         else:
             return True
 
     @property
     def are_impressions_finished(self):
         if not DEBUG:
-            return datetime.utcnow() >= self.submission_end
+            return datetime.utcnow().date() >= self.submission_end
         else:
             return True
 

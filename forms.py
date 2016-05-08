@@ -95,7 +95,7 @@ class EventForm(Form):
 
     submission_start = DateField("Submission start date (Open at start of this day)")
 
-    submission_end = DateField("Submission end date (Close at end of this day")
+    submission_end = DateField("Submission end date (Close at end of this day)")
 
     scoring_method = RadioField("Scoring method", choices=score_choices,
                                 description="""
