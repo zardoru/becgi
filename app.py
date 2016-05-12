@@ -257,8 +257,8 @@ def event_submit_impression(event_id, song_id):
             author = form.author.data
             rating = form.rating.data
             comment = form.comment.data
-
-            if len(comment.strip()) == 0 or evt.allow_blank_comments:
+            
+            if len(comment.strip()) != 0 or evt.allow_blank_comments:
                 try:
                     ip = request.environ["REMOTE_ADDR"]
                     evt.insert_impression(song_id, author, rating, comment, ip)
